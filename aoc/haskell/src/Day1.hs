@@ -1,4 +1,4 @@
--- | Advent of Code 2019 day one solution.
+-- | Advent of Code 2019 day 1 solution.
 
 module Day1 (calcFuel, run, calcModuleFuel) where
 

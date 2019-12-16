@@ -4,11 +4,11 @@
 
   The ~inputs~ directory has unmodified inputs for problems that I have solved.
 
-* 2019 Day 1
+* 2019 Day 1: The Tyranny of the Rocket Equation
 
-   Original Puzzle: https://adventofcode.com/2019/day/1
+  Original Puzzle: https://adventofcode.com/2019/day/1
 
-   My rewrite of the requirements as I understand them.
+  My simplified rewrite of the requirements as I understand them follows:
 
 ** Part 1
 
@@ -45,5 +45,86 @@
    g(100756) = 33583 + 11192 + 3728 + 1240 + 411 + 135 + 43 + 12 + 2 = 50346.
    #+end_example
 
-* 2019 Day 2
+* 2019 Day 2: 1202 Program Alarm
+
+  Original Puzzle: https://adventofcode.com/2019/day/1
+
+  My simplified rewrite of the requirements as I understand them follows:
+
+** Part 1
+
+   Build a int-code computer that computes a program which is given as a list of
+   integers separated by commas (like 1,0,0,3,99).
+
+   The list is zero-indexed so a program such as ~1,0,0,3,99~ has ~1~ at index
+   or position 0 etc:
+
+   #+begin_src
+   ---------> index 0
+   | -------> index 1
+   | | -----> index 2
+   | | | ---> index 3
+   | | | | -> index 4
+   | | | | |
+   1,0,0,3,99
+   #+end_src
+
+   The computer runs through the program from the beginning to the end operating
+   on at 4 values at a time. The first value is the opcode and the next 3 are
+   operands. The following labels the opcodes and operands from the example
+   above:
+
+   #+begin_src
+   ---------> opcode
+   | -------> operand
+   | | -----> operand
+   | | | ---> operand
+   | | | | -> opcode
+   | | | | |
+   1,0,0,3,99
+   #+end_src
+
+   The following table shows the possible opcodes:
+
+   |    opcode | description      |
+   |-----------+------------------|
+   |         1 | add              |
+   |         2 | multiply         |
+   |        99 | halt the program |
+   | otherwise | error            |
+
+   - The ~1~ opcode adds uses the next 3 operands as indexes into the entire
+     program. The first and second operand provides the index of two values to
+     add together. The third operand provides the index the store the result.
+
+     For example in ~1,0,0,3~ the first value is the opcode for addition. The
+     next 2 values are indexes of the values to add. They are both index 0; the
+     value at index 0 is 1. Therefore, the result is 2 (1 + 1 = 2). The third
+     value is the operand that gives the index where to store the result (index
+     3; the same index as the current operand). Therefore, this will change the
+     program from ~1,0,0,3~ to ~1,0,0,2~.
+
+   - The ~2~ opcode ix exactly the same as opcode 1, but the values are
+     multiplied instead of adding.
+
+   - The ~99~ opcode instructs the program to halt the program and uses no
+     operands.
+
+   Here are the initial and final states of a few more small programs:
+
+   #+begin_src
+    1,0,0,0,99 becomes 2,0,0,0,99 (1 + 1 = 2).
+    2,3,0,3,99 becomes 2,3,0,6,99 (3 * 2 = 6).
+    2,4,4,5,99,0 becomes 2,4,4,5,99,9801 (99 * 99 = 9801).
+    1,1,1,4,99,5,6,0,99 becomes 30,1,1,4,2,5,6,0,99.
+   #+end_src
+
+Once you have a working computer, the first step is to restore the gravity
+assist program (your puzzle input) to the "1202 program alarm" state it had just
+before the last computer caught fire. To do this, before running the program,
+replace position 1 with the value 12 and replace position 2 with the value 2.
+What value is left at position 0 after the program halts?
+
+To begin, get your puzzle input.
+
 
