@@ -10,7 +10,7 @@ type Fuel = Int
 
 run :: IO ()
 run = do
-  text <- B.readFile "../inputs/input-day1.txt"
+  text <- B.readFile "../inputs/2019/input-day1.txt"
   let moduleMasses = fmap fst $ mapMaybe B.readInt $ B.lines text
   putStrLn "Part 1:"
   print $ sum $ calcFuel <$> moduleMasses
