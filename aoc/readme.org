@@ -104,7 +104,7 @@
      3; the same index as the current operand). Therefore, this will change the
      program from ~1,0,0,3~ to ~1,0,0,2~.
 
-   - The ~2~ opcode ix exactly the same as opcode 1, but the values are
+   - The ~2~ opcode is exactly the same as opcode 1, but the values are
      multiplied instead of adding.
 
    - The ~99~ opcode instructs the program to halt the program and uses no
@@ -119,12 +119,19 @@
     1,1,1,4,99,5,6,0,99 becomes 30,1,1,4,2,5,6,0,99.
    #+end_src
 
-Once you have a working computer, the first step is to restore the gravity
-assist program (your puzzle input) to the "1202 program alarm" state it had just
-before the last computer caught fire. To do this, before running the program,
-replace position 1 with the value 12 and replace position 2 with the value 2.
-What value is left at position 0 after the program halts?
-
-To begin, get your puzzle input.
+   Once you have a working computer, the first step is to restore the gravity
+   assist program (your puzzle input) to the "1202 program alarm" state it had
+   just before the last computer caught fire. To do this, before running the
+   program, replace position 1 with the value 12 and replace position 2 with the
+   value 2. What value is left at position 0 after the program halts?
 
 
+** Part 2
+
+   Part 2 defines a bunch of terminology. The important bits are that the value
+   at position 0 in memory is called "output", position 1 is called "noun", and
+   position 2 is called "verb". Noun and verb have possible values on interval
+   [0, 99].
+
+   Determine what pair of nouns and verbs produces the output 19690720. For that
+   noun and verb pair, what is 100 * noun + verb?
