@@ -18,6 +18,7 @@ pub fn run() -> std::io::Result<()> {
         .filter_map(Result::ok)
         .collect();
 
+    println!("== Day 1 ==");
     println!("Part 1:");
     let part_1_sum: i32 = masses.iter().map(|&m| calc_fuel(m)).sum();
     println!("{}", part_1_sum);
