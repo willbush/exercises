@@ -30,8 +30,9 @@ run :: IO ()
 run = do
   text <- B.readFile "../inputs/2019/input-day2.txt"
   let program = fmap fst $ mapMaybe B.readInt $ B.split ',' text
+  putStrLn "== Day 2 =="
   putStrLn "Part 1:"
-  print $ runProgram $ setNounAndVerb 12 2 program
+  print $ head $ runProgram $ setNounAndVerb 12 2 program
 
   putStrLn "Part 2:"
   -- | "determine what pair of inputs produces the output 19690720... the output
@@ -52,25 +53,25 @@ runProgram :: [Int] -> [Int]
 runProgram program = elems $ A.runSTUArray $ do
   let end = length program - 1
   memory <- A.newListArray (0, end) program
-  compute_ [0, 4 .. end] memory
+  compute [0, 4 .. end] memory
   pure memory
 
-compute_ :: [OpCodeAddress] -> Memory s -> ST s ()
-compute_ []                          _   = pure ()
-compute_ (opcodeAddress : addresses) mem = do
+compute :: [OpCodeAddress] -> Memory s -> ST s ()
+compute []                          _   = pure ()
+compute (opcodeAddress : addresses) mem = do
   opcode <- A.readArray mem opcodeAddress
   case opcode of
     1 -> do
-      applyOp_ (+) opcodeAddress mem
-      compute_ addresses mem
+      applyOp (+) opcodeAddress mem
+      compute addresses mem
     2 -> do
-      applyOp_ (*) opcodeAddress mem
-      compute_ addresses mem
+      applyOp (*) opcodeAddress mem
+      compute addresses mem
     99 -> pure ()
     _  -> error $ "Unknown opcode: " <> show opcode
 
-applyOp_ :: (Int -> Int -> Int) -> OpCodeAddress -> Memory s -> ST s ()
-applyOp_ op address mem = do
+applyOp :: (Int -> Int -> Int) -> OpCodeAddress -> Memory s -> ST s ()
+applyOp op address mem = do
   aAddress      <- A.readArray mem (address + 1)
   bAddress      <- A.readArray mem (address + 2)
   resultAddress <- A.readArray mem (address + 3)
