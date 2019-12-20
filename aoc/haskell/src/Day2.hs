@@ -51,9 +51,9 @@ setNounAndVerb _ _ xs               = xs
 runProgram :: [Int] -> [Int]
 runProgram program = elems $ A.runSTUArray $ do
   let end = length program - 1
-  mutableProgram <- A.newListArray (0, end) program
-  compute_ [0, 4 .. end] mutableProgram
-  pure mutableProgram
+  memory <- A.newListArray (0, end) program
+  compute_ [0, 4 .. end] memory
+  pure memory
 
 compute_ :: [OpCodeAddress] -> Memory s -> ST s ()
 compute_ []                          _   = pure ()
