@@ -1,4 +1,5 @@
--- | Advent of Code 2019 day 2 solution.
+-- | Advent of Code 2019 day 2 solution. I'm being kinda lazy with the error
+-- handling in this solution because I'm using 'error' and partial functions.
 
 module Day2 (run, runProgram) where
 
@@ -7,16 +8,45 @@ import qualified Data.Array.ST                 as A
 import           Data.Array.Unboxed             ( elems )
 import qualified Data.ByteString.Char8         as B
 import           Data.Maybe                     ( mapMaybe )
+import           Data.Foldable                  ( find )
+
+-- | The memory holds the program state in an unboxed array mutable in the ST
+-- monad. Memory is part of the terminology from part 2.
+type Memory s = A.STUArray s Int Int
+
+-- | An address is really just an index into the Memory array. Address is part
+-- of the terminology from part 2.
+type OpCodeAddress = Int
+
+-- | The noun is the value of the program at position (or address) 1. Its
+-- possible values range between [0, 99].
+type Noun = Int
+
+-- | The verb is the value of the program at position (or address) 2. Its
+-- possible values range between [0, 99].
+type Verb = Int
 
 run :: IO ()
 run = do
   text <- B.readFile "../inputs/2019/input-day2.txt"
   let program = fmap fst $ mapMaybe B.readInt $ B.split ',' text
-  print $ runProgram $ restoreProgramState program
+  putStrLn "Part 1:"
+  print $ runProgram $ setNounAndVerb 12 2 program
 
-restoreProgramState :: [Int] -> [Int]
-restoreProgramState (x : _ : _ : xs) = x : 12 : 2 : xs
-restoreProgramState xs               = xs
+  putStrLn "Part 2:"
+  -- | "determine what pair of inputs produces the output 19690720... the output
+  -- is available at address 0."
+  let allPossibleNounVerbs = [ (n, v) | n <- [0 .. 99], v <- [0 .. 99] ]
+      maybeAnswer :: Maybe ((Noun, Verb), Int)
+      maybeAnswer = find (\x -> snd x == 19690720) $ fmap
+        (\nv@(n, v) -> (nv, head $ runProgram $ setNounAndVerb n v program))
+        allPossibleNounVerbs
+  -- | "What is 100 * noun + verb?"
+  print $ (\x -> let nv = fst x in 100 * fst nv + snd nv) <$> maybeAnswer
+
+setNounAndVerb :: Noun -> Verb -> [Int] -> [Int]
+setNounAndVerb n v (x : _ : _ : xs) = x : n : v : xs
+setNounAndVerb _ _ xs               = xs
 
 runProgram :: [Int] -> [Int]
 runProgram program = elems $ A.runSTUArray $ do
@@ -25,27 +55,25 @@ runProgram program = elems $ A.runSTUArray $ do
   compute_ [0, 4 .. end] mutableProgram
   pure mutableProgram
 
-type OpCodeIndex = Int
-
-compute_ :: [OpCodeIndex] -> A.STUArray s Int Int -> ST s ()
-compute_ []                      _       = pure ()
-compute_ (opcodeIndex : indices) program = do
-  opcode <- A.readArray program opcodeIndex
+compute_ :: [OpCodeAddress] -> Memory s -> ST s ()
+compute_ []                          _   = pure ()
+compute_ (opcodeAddress : addresses) mem = do
+  opcode <- A.readArray mem opcodeAddress
   case opcode of
     1 -> do
-      applyOp_ (+) opcodeIndex program
-      compute_ indices program
+      applyOp_ (+) opcodeAddress mem
+      compute_ addresses mem
     2 -> do
-      applyOp_ (*) opcodeIndex program
-      compute_ indices program
-    _ -> pure ()
+      applyOp_ (*) opcodeAddress mem
+      compute_ addresses mem
+    99 -> pure ()
+    _  -> error $ "Unknown opcode: " <> show opcode
 
-applyOp_
-  :: (Int -> Int -> Int) -> OpCodeIndex -> A.STUArray s Int Int -> ST s ()
-applyOp_ op i program = do
-  aIndex      <- A.readArray program (i + 1)
-  bIndex      <- A.readArray program (i + 2)
-  resultIndex <- A.readArray program (i + 3)
-  a           <- A.readArray program aIndex
-  b           <- A.readArray program bIndex
-  A.writeArray program resultIndex $ op a b
+applyOp_ :: (Int -> Int -> Int) -> OpCodeAddress -> Memory s -> ST s ()
+applyOp_ op address mem = do
+  aAddress      <- A.readArray mem (address + 1)
+  bAddress      <- A.readArray mem (address + 2)
+  resultAddress <- A.readArray mem (address + 3)
+  a             <- A.readArray mem aAddress
+  b             <- A.readArray mem bAddress
+  A.writeArray mem resultAddress $ op a b
