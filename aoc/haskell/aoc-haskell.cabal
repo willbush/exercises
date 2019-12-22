@@ -1,37 +1,25 @@
-cabal-version:       2.4
+cabal-version: 2.4
 
 name:                aoc-haskell
 version:             0.1.0.0
 synopsis:            Advent of Code solutions in Haskell
 license:             MIT
-license-file:        LICENSE
-author:              willbush
+author:              Will Bush
 maintainer:          will.g.bush@gmail.com
 
 library
   exposed-modules:
-    Day1
-    Day2
-    Day3
-  -- other-modules:
-  -- other-extensions:
+      Day1
+      Day2
+      Day3
   build-depends:
-      base ^>=4.12.0.0
+      array
+    , base >=4.12.0.0 && <4.13
     , bytestring
-    , array
-    , safe
-  hs-source-dirs:      src
-  default-language:    Haskell2010
-
-executable aoc-haskell
-  main-is:             Main.hs
-  -- other-modules:
-  -- other-extensions:
-  build-depends:
-      base ^>=4.12.0.0
-    , aoc-haskell
-  -- hs-source-dirs:
-  default-language:    Haskell2010
+    , safe >=0.3.18
+    , utility-ht >=0.0.14
+  hs-source-dirs:
+      src
   ghc-options:
     -Wall
     -Wcompat
@@ -40,12 +28,36 @@ executable aoc-haskell
     -Wincomplete-uni-patterns
     -Wpartial-fields
     -Wredundant-constraints
+  default-language: Haskell2010
+
+executable aoc-haskell-exe
+  main-is: Main.hs
+  ghc-options:
+    -Wall
+    -Wcompat
+    -Widentities
+    -Wincomplete-record-updates
+    -Wincomplete-uni-patterns
+    -Wpartial-fields
+    -Wredundant-constraints
+    -threaded
+    -rtsopts
+    -with-rtsopts=-N
+  build-depends:
+      aoc-haskell
+    , array
+    , base >=4.12.0.0 && <4.13
+    , bytestring
+    , safe >=0.3.18
+    , utility-ht >=0.0.14
+  default-language: Haskell2010
 
 test-suite aoc-haskell-test
-  default-language:    Haskell2010
-  type:                exitcode-stdio-1.0
-  hs-source-dirs:      test
-  main-is:             Spec.hs
+  default-language: Haskell2010
+  type: exitcode-stdio-1.0
+  hs-source-dirs:
+      test
+  main-is: Spec.hs
   ghc-options:
     -Wall
     -Wcompat
@@ -54,8 +66,14 @@ test-suite aoc-haskell-test
     -Wincomplete-uni-patterns
     -Wpartial-fields
     -Wredundant-constraints
+    -threaded
+    -rtsopts
+    -with-rtsopts=-N
   build-depends:
-      base ^>=4.12.0.0
-    , aoc-haskell
-    , QuickCheck
+      aoc-haskell
+    , array
+    , base >=4.12.0.0 && <4.13
+    , bytestring
     , hspec
+    , safe >=0.3.18
+    , utility-ht >=0.0.14
