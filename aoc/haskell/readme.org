@@ -1,0 +1,20 @@
+* Building and Running
+
+  I'm currently using just [[https://www.haskell.org/cabal/users-guide/index.html][cabal]] on this project, but stack should also work
+  fine after doing ~stack init~.
+
+  Run the Advent of Code haskell executable, which prints out solutions:
+
+  ~cabal new-run aoc-haskell-exe~
+
+  Run Tests:
+
+  ~cabal new-run aoc-haskell-text~
+
+  Run [[https://github.com/ndmitchell/ghcid][ghcid]] for the executable and library:
+
+  ~ghcid -c "cabal new-repl"~
+
+  Run [[https://github.com/ndmitchell/ghcid][ghcid]] for the tests:
+
+  ~ghcid -c "cabal new-repl aoc-haskell-text" -T=:main~
