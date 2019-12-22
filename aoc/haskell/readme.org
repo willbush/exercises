@@ -17,4 +17,4 @@
 
   Run [[https://github.com/ndmitchell/ghcid][ghcid]] for the tests:
 
-  ~ghcid -c "cabal new-repl aoc-haskell-text" -T=:main~
+  ~ghcid -c "cabal new-repl aoc-haskell-text" -T=:main --restart=./src~
