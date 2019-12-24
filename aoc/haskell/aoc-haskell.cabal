@@ -12,12 +12,16 @@ library
       Day1
       Day2
       Day3
+      Day4
   build-depends:
       array
     , base >=4.12.0.0 && <4.13
     , bytestring
     , safe >=0.3.18
     , utility-ht >=0.0.14
+    , containers >= 0.6.2.1
+    , extra
+    , ilist >= 0.3.1.0
   hs-source-dirs:
       src
   ghc-options:
@@ -50,6 +54,9 @@ executable aoc-haskell-exe
     , bytestring
     , safe >=0.3.18
     , utility-ht >=0.0.14
+    , containers >= 0.6.2.1
+    , extra
+    , ilist >= 0.3.1.0
   default-language: Haskell2010
 
 test-suite aoc-haskell-test
@@ -77,3 +84,6 @@ test-suite aoc-haskell-test
     , hspec
     , safe >=0.3.18
     , utility-ht >=0.0.14
+    , containers >= 0.6.2.1
+    , extra
+    , ilist >= 0.3.1.0
