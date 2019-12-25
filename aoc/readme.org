@@ -47,7 +47,7 @@
 
 * 2019 Day 2: 1202 Program Alarm
 
-  Original Puzzle: https://adventofcode.com/2019/day/1
+  Original Puzzle: https://adventofcode.com/2019/day/2
 
   My simplified rewrite of the requirements as I understand them follows:
 
@@ -93,7 +93,7 @@
    |        99 | halt the program |
    | otherwise | error            |
 
-   - The ~1~ opcode adds uses the next 3 operands as indexes into the entire
+   - The ~1~ opcode adds using the next 3 operands as indexes into the entire
      program. The first and second operand provides the index of two values to
      add together. The third operand provides the index the store the result.
 
