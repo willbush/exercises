@@ -326,7 +326,7 @@ Your puzzle input is still 130254-678275.
      value is valid.
 
    - Opcode 4 has a single operand as well. For example, ~4,50~ prints the
-     values ad address 50.
+     values at address 50.
 
 *** Parameter Modes
 
@@ -341,7 +341,7 @@ Your puzzle input is still 130254-678275.
 
     #+begin_src
     ABCDE
-    1002
+     1002
 
     DE - two-digit opcode,      02 == opcode 2
     C - mode of 1st parameter,  0 == position mode
