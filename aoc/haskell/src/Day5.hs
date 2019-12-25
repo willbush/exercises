@@ -13,6 +13,11 @@ import           Data.Maybe                     ( mapMaybe )
 -- monad. Memory is part of the terminology from part 2.
 type Memory s = A.STUArray s Int Int
 
+-- | Just a couple of type alias to help disambiguate between type and improve
+-- readability.
+type Program = [Int]
+type Outputs = [Int]
+
 -- | IP stands for instruction pointer. It just points to the index of the
 -- beginning of the next instruction. The instruction opcode determines how many
 -- operands there are and thus where the next instruction starts.
@@ -32,13 +37,15 @@ run = do
   putStrLn "Part 2:"
   print $ runProgram 5 program
 
-runProgram :: Input -> [Int] -> [Int]
+-- | Runs a int code program and returns a list of outputs given by opcode 4.
+-- The given input is supplied to the input opcode 3.
+runProgram :: Input -> Program -> Outputs
 runProgram _     []      = []
 runProgram input program = runST $ do
   memory <- A.newListArray (0, length program - 1) program
   go 0 memory []
  where
-  go :: IP -> Memory s -> [Int] -> ST s [Int]
+  go :: IP -> Memory s -> Outputs -> ST s Outputs
   go ip mem outputs = do
     instruction <- A.readArray mem ip
     let opcode = instruction `mod` 100
@@ -73,17 +80,25 @@ runProgram input program = runST $ do
       99 -> pure $ reverse outputs
       _  -> error $ "Unknown opcode: " <> show opcode
 
+-- | Applies the given 2 parameter function to the first two operand parameters
+-- and stores the result in the address of the third. The instruction is fetched
+-- to determine the parameter mode.
 applyBinaryOp :: (Int -> Int -> Int) -> IP -> Memory s -> ST s ()
 applyBinaryOp op ip mem = do
   (a, b)        <- getP1P2Values ip mem
   resultAddress <- A.readArray mem (ip + 3)
   A.writeArray mem resultAddress $ op a b
 
+-- | Returns the instruction pointer to jump to. When the given function returns
+-- true, the first parameters value is used otherwise the instruction pointer is
+-- just incremented to the next instruction.
 jumpWhenP1 :: (Int -> Bool) -> IP -> Memory s -> ST s IP
 jumpWhenP1 isP1Jumping ip mem = do
   (a, b) <- getP1P2Values ip mem
   pure $ if isP1Jumping a then b else ip + 3
 
+-- | fetches the instruction to determine the parameter mode, gathers, and
+-- returns the first two parameters value.
 getP1P2Values :: IP -> Memory s -> ST s (Int, Int)
 getP1P2Values ip mem = do
   instruction <- A.readArray mem ip
