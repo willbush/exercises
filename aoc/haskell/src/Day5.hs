@@ -13,9 +13,11 @@ import           Data.Maybe                     ( mapMaybe )
 -- monad.
 type Memory s = A.STUArray s Int Int
 
--- | Just a couple of type alias to help disambiguate between type and improve
--- readability.
+-- | The program serves as the initial state of the memory which is parsed from
+-- the program input.
 type Program = [Int]
+
+-- | The output of the program which is given by the opcode 4.
 type Outputs = [Int]
 
 -- | IP stands for instruction pointer. It just points to the index of the
@@ -23,7 +25,7 @@ type Outputs = [Int]
 -- operands there are and thus where the next instruction starts.
 type IP = Int
 
--- | The input for opcode 3
+-- | The input to supply when opcode 3 is called
 type Input = Int
 
 run :: IO ()
@@ -97,7 +99,7 @@ jumpWhenP1 isP1Jumping ip mem = do
   (a, b) <- getP1P2Values ip mem
   pure $ if isP1Jumping a then b else ip + 3
 
--- | fetches the instruction to determine the parameter mode, gathers, and
+-- | Fetches the instruction to determine the parameter mode, gathers, and
 -- returns the first two parameters value.
 getP1P2Values :: IP -> Memory s -> ST s (Int, Int)
 getP1P2Values ip mem = do
