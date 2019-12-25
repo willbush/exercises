@@ -78,18 +78,17 @@ compute input insPtr memory = go insPtr memory []
 
 applyBinaryOp :: (Int -> Int -> Int) -> IP -> Memory s -> ST s ()
 applyBinaryOp op ip mem = do
-  instruction <- A.readArray mem ip
-  let isP1Immediate = instruction `div` 100 `mod` 10 == 1
-      isP2Immediate = instruction `div` 1000 `mod` 10 == 1
-  p1            <- A.readArray mem (ip + 1)
-  p2            <- A.readArray mem (ip + 2)
+  (a, b)        <- getP1P2Values ip mem
   resultAddress <- A.readArray mem (ip + 3)
-  a             <- if isP1Immediate then pure p1 else A.readArray mem p1
-  b             <- if isP2Immediate then pure p2 else A.readArray mem p2
   A.writeArray mem resultAddress $ op a b
 
 jumpWhenP1 :: (Int -> Bool) -> IP -> Memory s -> ST s IP
 jumpWhenP1 isP1Jumping ip mem = do
+  (a, b) <- getP1P2Values ip mem
+  pure $ if isP1Jumping a then b else ip + 3
+
+getP1P2Values :: IP -> Memory s -> ST s (Int, Int)
+getP1P2Values ip mem = do
   instruction <- A.readArray mem ip
   let isP1Immediate = instruction `div` 100 `mod` 10 == 1
       isP2Immediate = instruction `div` 1000 `mod` 10 == 1
@@ -97,4 +96,4 @@ jumpWhenP1 isP1Jumping ip mem = do
   p2 <- A.readArray mem (ip + 2)
   a  <- if isP1Immediate then pure p1 else A.readArray mem p1
   b  <- if isP2Immediate then pure p2 else A.readArray mem p2
-  pure $ if isP1Jumping a then b else ip + 3
+  pure (a, b)
