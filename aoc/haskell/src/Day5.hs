@@ -36,10 +36,7 @@ runProgram :: Input -> [Int] -> [Int]
 runProgram _     []      = []
 runProgram input program = runST $ do
   memory <- A.newListArray (0, length program - 1) program
-  compute input 0 memory
-
-compute :: Input -> IP -> Memory s -> ST s [Int]
-compute input insPtr memory = go insPtr memory []
+  go 0 memory []
  where
   go :: IP -> Memory s -> [Int] -> ST s [Int]
   go ip mem outputs = do
