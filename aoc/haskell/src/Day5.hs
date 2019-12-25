@@ -18,24 +18,28 @@ type Memory s = A.STUArray s Int Int
 -- operands there are and thus where the next instruction starts.
 type IP = Int
 
+-- | The input for opcode 3
+type Input = Int
+
 run :: IO ()
 run = do
   text <- B.readFile "../inputs/2019/input-day5.txt"
   let program = fmap fst $ mapMaybe B.readInt $ B.split ',' text
   putStrLn "== Day 5 =="
   putStrLn "Part 1:"
-  print $ runProgram program
+  print $ runProgram 1 program
 
   putStrLn "Part 2:"
+  print $ runProgram 5 program
 
-runProgram :: [Int] -> [Int]
-runProgram []      = []
-runProgram program = runST $ do
+runProgram :: Input -> [Int] -> [Int]
+runProgram _     []      = []
+runProgram input program = runST $ do
   memory <- A.newListArray (0, length program - 1) program
-  compute 0 memory
+  compute input 0 memory
 
-compute :: IP -> Memory s -> ST s [Int]
-compute insPtr memory = go insPtr memory []
+compute :: Input -> IP -> Memory s -> ST s [Int]
+compute input insPtr memory = go insPtr memory []
  where
   go :: IP -> Memory s -> [Int] -> ST s [Int]
   go ip mem outputs = do
@@ -50,13 +54,25 @@ compute insPtr memory = go insPtr memory []
         go (ip + 4) mem outputs
       3 -> do
         inputAddress <- A.readArray mem (ip + 1)
-        A.writeArray mem inputAddress 1 -- input is always 1
+        A.writeArray mem inputAddress input
         go (ip + 2) mem outputs
       4 -> do
         let isP1Immediate = instruction `div` 100 `mod` 10 == 1
         p1     <- A.readArray mem (ip + 1)
         output <- if isP1Immediate then pure p1 else A.readArray mem p1
         go (ip + 2) mem (output : outputs)
+      5 -> do
+        ip' <- jumpWhenP1 (/= 0) ip mem
+        go ip' mem outputs
+      6 -> do
+        ip' <- jumpWhenP1 (== 0) ip mem
+        go ip' mem outputs
+      7 -> do
+        applyBinaryOp (\x y -> if x < y then 1 else 0) ip mem
+        go (ip + 4) mem outputs
+      8 -> do
+        applyBinaryOp (\x y -> if x == y then 1 else 0) ip mem
+        go (ip + 4) mem outputs
       99 -> pure $ reverse outputs
       _  -> error $ "Unknown opcode: " <> show opcode
 
@@ -71,3 +87,14 @@ applyBinaryOp op ip mem = do
   a             <- if isP1Immediate then pure p1 else A.readArray mem p1
   b             <- if isP2Immediate then pure p2 else A.readArray mem p2
   A.writeArray mem resultAddress $ op a b
+
+jumpWhenP1 :: (Int -> Bool) -> IP -> Memory s -> ST s IP
+jumpWhenP1 isP1Jumping ip mem = do
+  instruction <- A.readArray mem ip
+  let isP1Immediate = instruction `div` 100 `mod` 10 == 1
+      isP2Immediate = instruction `div` 1000 `mod` 10 == 1
+  p1 <- A.readArray mem (ip + 1)
+  p2 <- A.readArray mem (ip + 2)
+  a  <- if isP1Immediate then pure p1 else A.readArray mem p1
+  b  <- if isP2Immediate then pure p2 else A.readArray mem p2
+  pure $ if isP1Jumping a then b else ip + 3
