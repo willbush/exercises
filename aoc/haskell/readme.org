@@ -1,20 +1,28 @@
 * Building and Running
 
-  I'm currently using just [[https://www.haskell.org/cabal/users-guide/index.html][cabal]] on this project, but stack should also work
+  I'm currently using just [[https://www.haskell.org/cabal/users-guide/index.html][cabal]] on this project, but [[https://docs.haskellstack.org/en/stable/README/][stack]] should also work
   fine after doing ~stack init~.
 
   Run the Advent of Code haskell executable, which prints out solutions:
 
-  ~cabal new-run aoc-haskell-exe~
+  #+begin_src
+  cabal new-run aoc-haskell-exe
+  #+end_src
 
   Run Tests:
 
-  ~cabal new-run aoc-haskell-text~
+  #+begin_src
+  cabal new-run aoc-haskell-text
+  #+end_src
 
   Run [[https://github.com/ndmitchell/ghcid][ghcid]] for the executable and library:
 
-  ~ghcid -c "cabal new-repl"~
+  #+begin_src
+  ghcid -c "cabal new-repl"
+  #+end_src
 
   Run [[https://github.com/ndmitchell/ghcid][ghcid]] for the tests:
 
-  ~ghcid -c "cabal new-repl aoc-haskell-text" -T=:main --restart=./src~
+  #+begin_src
+  ghcid -c "cabal new-repl aoc-haskell-text" -T=:main --restart=./src
+  #+end_src
