@@ -295,3 +295,108 @@ all of the criteria?
 
 Your puzzle input is still 130254-678275.
 #+end_quote
+
+* 2019 Day 5: Sunny with a Chance of Asteroids
+
+  Original Puzzle: https://adventofcode.com/2019/day/5
+
+  My simplified rewrite of the requirements as I understand them follows:
+
+** Part 1
+
+   Extend the Int-code computer from Day2 (see day2 for context) with 2 new
+   opcodes and parameter modes.
+
+*** New Opcodes
+
+   |    opcode | description      |
+   |-----------+------------------|
+   |         1 | add              |
+   |         2 | multiply         |
+   |         3 | get user input   |
+   |         4 | output           |
+   |        99 | halt the program |
+   | otherwise | error            |
+
+   - Opcode 3 has a single operand. For example, in ~3,50~ 3 is the opcode and
+     50 is the operand. The opcode 3 requests input from the user and stores it
+     at the address (i.e. index into the memory/program/array) 50. Part 1 only
+     requests one input and it must be ~1~. Therefore I'm going to hard code it
+     somehow since there's not actual reason to prompt the user when only one
+     value is valid.
+
+   - Opcode 4 has a single operand as well. For example, ~4,50~ prints the
+     values ad address 50.
+
+*** Parameter Modes
+
+    Each opcode that has operands (aka parameters) now have two possible modes
+    for each parameter. A parameter can either be in position or immediate mode.
+    The digits in an instruction with the opcode now encode which mode a
+    parameter is in.
+
+    For example, in ~1002,4,3,4,33~ the first integer contains the opcode at the
+    rightmost digit position, and the opcode is 2 for multiplication. The
+    following explains the meaning of each digit in the first integer.
+
+    #+begin_src
+    ABCDE
+    1002
+
+    DE - two-digit opcode,      02 == opcode 2
+    C - mode of 1st parameter,  0 == position mode
+    B - mode of 2nd parameter,  1 == immediate mode
+    A - mode of 3rd parameter,  0 == position mode,
+                                      omitted due to being a leading zero
+    #+end_src
+
+    - Position mode :: 0 tells the computer to use the parameter value a memory
+      address.
+
+    - Immediate mode :: 1 tells the computer to use the parameter value as an
+      literal value.
+
+    the ~1002,4,3,4,33~ instruction multiplies its first two parameters (4, 3).
+    The first parameter, 4 in position mode, works like it did before - the
+    value to multiply is located at address 4 and is 33. The second parameter, 3
+    in immediate mode so we use 3 as the literal value. The result of this
+    operation, 33 * 3 = 99. The third parameter 4 tells where to store the
+    multiplication result. The third parameter is in position mode so 99 is
+    written to address 4. Note that position mode is the only valid mode for the
+    third parameter since the purpose of it is to tell where to store the result.
+
+*** Things to Note
+
+    - It is important to remember that the instruction pointer should increase
+      by the number of values in the instruction after the instruction finishes.
+      Because of the new instructions, this amount is no longer always 4.
+
+    - Integers can be negative: ~1101,100,-1,4,0~ is a valid program (find
+      ~100 + -1~, store the result in position 4).
+
+*** Run TEST diagnostic program
+
+    #+begin_quote
+    The TEST diagnostic program will start by requesting from the user the ID of
+    the system to test by running an input instruction - provide it 1, the ID
+    for the ship's air conditioner unit.
+
+    It will then perform a series of diagnostic tests confirming that various
+    parts of the Intcode computer, like parameter modes, function correctly. For
+    each test, it will run an output instruction indicating how far the result
+    of the test was from the expected value, where 0 means the test was
+    successful. Non-zero outputs mean that a function is not working correctly;
+    check the instructions that were run before the output instruction to see
+    which one failed.
+
+    Finally, the program will output a diagnostic code and immediately halt.
+    This final output isn't an error; an output followed immediately by a halt
+    means the program finished. If all outputs were zero except the diagnostic
+    code, the diagnostic program ran successfully.
+
+    After providing 1 to the only input instruction and passing all the tests,
+    what diagnostic code does the program produce?
+    #+end_quote
+
+** Part 2
+
