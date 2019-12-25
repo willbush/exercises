@@ -1,0 +1,4 @@
+* Exercises
+
+  A repository for programming exercises in whatever language I feel like using.
+  I currently only have a few [[https://adventofcode.com/][Advent of Code]] solutions.
