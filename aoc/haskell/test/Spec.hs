@@ -23,6 +23,7 @@ import           Day4                           ( meetsCriteria
                                                 , meetsCriteria'
                                                 , toDigits
                                                 )
+import qualified Day5                          as Day5
 import           Test.Hspec
 import           Safe.Foldable                  ( minimumMay )
 import           Data.Foldable                  ( foldl' )
@@ -183,6 +184,23 @@ main = hspec $ do
         meetsCriteria' 112233 `shouldBe` True
         meetsCriteria' 111122 `shouldBe` True
         meetsCriteria' 223333 `shouldBe` True
+
+  describe "AOC Day 5" $
+    describe "Part 1 runProgram function" $ do
+      it "can return nothing" $ do
+        Day5.runProgram [99] `shouldBe` []
+        Day5.runProgram [99, 0, 0, 0, 1, 0, 0, 0] `shouldBe` []
+        Day5.runProgram [] `shouldBe` []
+      it "can add and output" $ do
+        Day5.runProgram [1, 0, 0, 0, 4, 0, 99] `shouldBe` [2]
+        Day5.runProgram [1101, 2, 2, 0, 4, 0, 99] `shouldBe` [4]
+        Day5.runProgram [1101, 100, -1, 0, 4, 0, 99] `shouldBe` [99]
+      it "can multiply and output" $ do
+        Day5.runProgram [2, 0, 0, 0, 4, 0, 99] `shouldBe` [4]
+        Day5.runProgram [0002, 0, 0, 0, 4, 0, 99] `shouldBe` [4]
+        Day5.runProgram [1102, 4, 4, 0, 4, 0, 99] `shouldBe` [16]
+      it "can output immediate values" $
+        Day5.runProgram [104, 7, 99] `shouldBe` [7]
 
 -- | Uses the library functions together to solve part 1 of Day3. I could have
 -- put this in the library, but I don't really need it there the intermediate
