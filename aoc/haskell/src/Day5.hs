@@ -10,7 +10,7 @@ import qualified Data.ByteString.Char8         as B
 import           Data.Maybe                     ( mapMaybe )
 
 -- | The memory holds the program state in an unboxed array mutable in the ST
--- monad. Memory is part of the terminology from part 2.
+-- monad.
 type Memory s = A.STUArray s Int Int
 
 -- | Just a couple of type alias to help disambiguate between type and improve
