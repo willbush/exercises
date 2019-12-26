@@ -24,5 +24,5 @@
   Run [[https://github.com/ndmitchell/ghcid][ghcid]] for the tests:
 
   #+begin_src
-  ghcid -c "cabal new-repl aoc-haskell-test" -T=:main --restart=./src
+  ghcid -c "cabal new-repl aoc-haskell-test" -T=Main.main --restart=./src
   #+end_src
