@@ -12,7 +12,7 @@
   Run Tests:
 
   #+begin_src
-  cabal new-run aoc-haskell-text
+  cabal new-run aoc-haskell-test
   #+end_src
 
   Run [[https://github.com/ndmitchell/ghcid][ghcid]] for the executable and library:
@@ -24,5 +24,5 @@
   Run [[https://github.com/ndmitchell/ghcid][ghcid]] for the tests:
 
   #+begin_src
-  ghcid -c "cabal new-repl aoc-haskell-text" -T=:main --restart=./src
+  ghcid -c "cabal new-repl aoc-haskell-test" -T=:main --restart=./src
   #+end_src
