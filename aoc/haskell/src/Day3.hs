@@ -44,7 +44,7 @@ run = do
   text <- B.readFile "../inputs/2019/input-day3.txt"
   let wireLists = B.lines text
   case wireLists of
-    wireStr1 : wireStr2 : _ -> do
+    [wireStr1, wireStr2] -> do
 
       let wireDirections1 = parseWireStr wireStr1
           wireDirections2 = parseWireStr wireStr2

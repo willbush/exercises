@@ -13,7 +13,7 @@ run = do
   let rangeValues = fmap fst $ mapMaybe B.readInt $ B.split '-' text
 
   case rangeValues of
-    begin : end : _ -> do
+    [begin, end] -> do
       putStrLn "== Day 4 =="
       putStrLn "Part 1"
       let nums = [begin .. end]
