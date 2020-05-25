@@ -5,7 +5,7 @@ use std::io::prelude::Read;
 use std::io::BufReader;
 
 pub fn run() -> std::io::Result<()> {
-    let file = File::open("../inputs/2019/input-day2.txt")?;
+    let file = File::open("../inputs/aoc/2019/input-day2.txt")?;
     let mut buf_reader = BufReader::new(file);
     let mut inputs = String::new();
     buf_reader.read_to_string(&mut inputs)?;

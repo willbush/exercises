@@ -2,7 +2,7 @@
 {-# LANGUAGE StrictData        #-}
 
 -- | Advent of Code 2019 day 3 solution.
-module Day3
+module AdventOfCode.Day3
   ( Direction(..)
   , Line(..)
   , findIntersection
@@ -41,7 +41,7 @@ data Direction = U | D | L | R deriving (Show, Eq)
 
 run :: IO ()
 run = do
-  text <- B.readFile "../inputs/2019/input-day3.txt"
+  text <- B.readFile "../inputs/aoc/2019/input-day3.txt"
   let wireLists = B.lines text
   case wireLists of
     [wireStr1, wireStr2] -> do

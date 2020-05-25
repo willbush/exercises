@@ -1,6 +1,6 @@
 -- | Advent of Code 2019 day 5 solution.
 
-module Day5 (run, runProgram) where
+module AdventOfCode.Day5 (run, runProgram) where
 
 import           Control.Monad.ST               ( ST
                                                 , runST
@@ -30,7 +30,7 @@ type Input = Int
 
 run :: IO ()
 run = do
-  text <- B.readFile "../inputs/2019/input-day5.txt"
+  text <- B.readFile "../inputs/aoc/2019/input-day5.txt"
   let program = fmap fst $ mapMaybe B.readInt $ B.split ',' text
   putStrLn "== Day 5 =="
   putStrLn "Part 1:"

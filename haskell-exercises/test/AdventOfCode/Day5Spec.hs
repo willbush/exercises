@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day5Spec (spec) where
+module AdventOfCode.Day5Spec (spec) where
 
-import           Day5                           ( runProgram )
+import           AdventOfCode.Day5              ( runProgram )
 import           Test.Hspec
 
 spec :: Spec
@@ -64,4 +64,3 @@ spec = describe "AOC Day 5" $ do
             ]
       runProgram 8 program `shouldBe` [1000]
       runProgram 800 program `shouldBe` [1001]
-

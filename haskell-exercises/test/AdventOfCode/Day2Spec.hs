@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day2Spec (spec) where
+module AdventOfCode.Day2Spec (spec) where
 
-import           Day2                           ( runProgram )
+import           AdventOfCode.Day2              ( runProgram )
 import           Test.Hspec
 
 spec :: Spec
