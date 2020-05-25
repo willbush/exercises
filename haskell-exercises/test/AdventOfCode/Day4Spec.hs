@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day4Spec (spec) where
+module AdventOfCode.Day4Spec (spec) where
 
-import           Day4                           ( meetsCriteria
+import           AdventOfCode.Day4              ( meetsCriteria
                                                 , meetsCriteria'
                                                 , toDigits
                                                 )

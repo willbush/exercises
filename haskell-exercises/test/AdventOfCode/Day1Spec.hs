@@ -1,11 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day1Spec (spec) where
+module AdventOfCode.Day1Spec (spec) where
 
-import           Day1                           ( calcFuel
+import           Test.Hspec
+import           AdventOfCode.Day1              ( calcFuel
                                                 , calcModuleFuel
                                                 )
-import           Test.Hspec
 
 spec :: Spec
 spec = describe "AOC Day 1" $ do

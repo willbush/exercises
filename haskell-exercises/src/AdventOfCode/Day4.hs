@@ -2,14 +2,14 @@
 {-# LANGUAGE StrictData        #-}
 
 -- | Advent of Code 2019 day 4 solution.
-module Day4 (run, meetsCriteria, meetsCriteria', toDigits) where
+module AdventOfCode.Day4 (run, meetsCriteria, meetsCriteria', toDigits) where
 
 import qualified Data.ByteString.Char8         as B
 import           Data.Maybe                     ( mapMaybe )
 
 run :: IO ()
 run = do
-  text <- B.readFile "../inputs/2019/input-day4.txt"
+  text <- B.readFile "../inputs/aoc/2019/input-day4.txt"
   let rangeValues = fmap fst $ mapMaybe B.readInt $ B.split '-' text
 
   case rangeValues of

@@ -1,9 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day3Spec (spec) where
+module AdventOfCode.Day3Spec (spec) where
 
 import           Data.List.HT                   ( mapAdjacent )
-import           Day3                           ( Direction(..)
+import           AdventOfCode.Day3              ( Direction(..)
                                                 , Line(..)
                                                 , findIntersection
                                                 , findIntersections

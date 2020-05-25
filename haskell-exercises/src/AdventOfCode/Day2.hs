@@ -1,7 +1,7 @@
 -- | Advent of Code 2019 day 2 solution. I'm being kinda lazy with the error
 -- handling in this solution because I'm using 'error' and partial functions.
 
-module Day2 (run, runProgram) where
+module AdventOfCode.Day2 (run, runProgram) where
 
 import           Control.Monad.ST               ( ST )
 import qualified Data.Array.ST                 as A
@@ -28,7 +28,7 @@ type Verb = Int
 
 run :: IO ()
 run = do
-  text <- B.readFile "../inputs/2019/input-day2.txt"
+  text <- B.readFile "../inputs/aoc/2019/input-day2.txt"
   let program = fmap fst $ mapMaybe B.readInt $ B.split ',' text
   putStrLn "== Day 2 =="
   putStrLn "Part 1:"

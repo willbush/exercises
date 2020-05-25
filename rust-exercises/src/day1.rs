@@ -7,7 +7,7 @@ type Mass = i32;
 type Fuel = i32;
 
 pub fn run() -> std::io::Result<()> {
-    let file = File::open("../inputs/2019/input-day1.txt")?;
+    let file = File::open("../inputs/aoc/2019/input-day1.txt")?;
     let mut buf_reader = BufReader::new(file);
     let mut inputs = String::new();
     buf_reader.read_to_string(&mut inputs)?;
