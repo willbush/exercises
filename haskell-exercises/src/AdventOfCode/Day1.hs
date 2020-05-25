@@ -8,8 +8,9 @@ import           Data.Maybe                     ( mapMaybe )
 type Mass = Int
 type Fuel = Int
 
-getModuleMasses :: IO [Mass]
-getModuleMasses = do
+-- | read and parse module masses from input file.
+readModuleMasses :: IO [Mass]
+readModuleMasses = do
   text <- B.readFile "../inputs/aoc/2019/input-day1.txt"
   pure $ fmap fst $ mapMaybe B.readInt $ B.lines text
 
