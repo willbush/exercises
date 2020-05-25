@@ -5,7 +5,7 @@ module AdventOfCode.Day1Spec (spec) where
 import           Test.Hspec
 import           AdventOfCode.Day1              ( calcFuel
                                                 , calcModuleFuel
-                                                , getModuleMasses
+                                                , readModuleMasses
                                                 , part1Solution
                                                 , part2Solution
                                                 )
@@ -28,8 +28,8 @@ spec =
         calcModuleFuel 1969 `shouldBe` 966
         calcModuleFuel 100756 `shouldBe` 50346
 
-    describe "Solution" $ do
+    describe "Solution" $
       it "can solve part 1 and 2" $ do
-        moduleMasses <- getModuleMasses
+        moduleMasses <- readModuleMasses
         part1Solution moduleMasses `shouldBe` 3380880
         part2Solution moduleMasses `shouldBe` 5068454
