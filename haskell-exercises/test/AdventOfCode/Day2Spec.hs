@@ -2,12 +2,16 @@
 
 module AdventOfCode.Day2Spec (spec) where
 
-import           AdventOfCode.Day2              ( runProgram )
+import           AdventOfCode.Day2              ( runProgram
+                                                , part1Solution
+                                                , part2Solution
+                                                , readProgram
+                                                )
 import           Test.Hspec
 
 spec :: Spec
 spec =
-  describe "AOC Day 2" $
+  describe "AOC Day 2" $ do
     describe "Part 1 runProgram function" $ do
 
       it "should run simple programs" $ do
@@ -20,3 +24,9 @@ spec =
       it "should halt when 99 is reached" $ do
         let doNothingProgram = [99, 0, 0, 0, 1, 0, 0, 0]
         runProgram doNothingProgram `shouldBe` doNothingProgram
+
+    describe "Solution" $
+      it "can solve part 1 and 2" $ do
+        program <- readProgram
+        part1Solution program `shouldBe` Just 9581917
+        part2Solution program `shouldBe` Just 2505
