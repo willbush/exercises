@@ -1,6 +1,6 @@
 * Exercises
 
-  A repository for toying around with programming exercises in various languages
+  A repository for toying around with programming exercises in various languages.
 
 * Advent of Code (aoc) solutions
 
