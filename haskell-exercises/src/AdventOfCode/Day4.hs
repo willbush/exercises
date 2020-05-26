@@ -2,25 +2,24 @@
 {-# LANGUAGE StrictData        #-}
 
 -- | Advent of Code 2019 day 4 solution.
-module AdventOfCode.Day4 (run, meetsCriteria, meetsCriteria', toDigits) where
+module AdventOfCode.Day4
+  ( meetsCriteria
+  , meetsCriteria'
+  , toDigits
+  , part1Solution
+  , part2Solution
+  , readRange
+  )
+where
 
 import qualified Data.ByteString.Char8         as B
 import           Data.Maybe                     ( mapMaybe )
 
-run :: IO ()
-run = do
-  text <- B.readFile "../inputs/aoc/2019/input-day4.txt"
-  let rangeValues = fmap fst $ mapMaybe B.readInt $ B.split '-' text
+part1Solution :: [Int] -> Int
+part1Solution range = length $ filter meetsCriteria range
 
-  case rangeValues of
-    [begin, end] -> do
-      putStrLn "== Day 4 =="
-      putStrLn "Part 1"
-      let nums = [begin .. end]
-      print $ length $ filter meetsCriteria nums
-      putStrLn "Part 2"
-      print $ length $ filter meetsCriteria' nums
-    _ -> putStrLn "Expected input to have two ranges."
+part2Solution :: [Int] -> Int
+part2Solution range = length $ filter meetsCriteria' range
 
 -- | part 1 criteria returns true if the given number contains an adjacent pair
 -- and each consecutive value is >= to the next.
@@ -61,3 +60,13 @@ toDigits n = go n []
  where
   go x acc | x < 10    = x : acc
            | otherwise = go (x `div` 10) (x `mod` 10 : acc)
+
+readRange :: IO [Int]
+readRange = do
+  text <- B.readFile "../inputs/aoc/2019/input-day4.txt"
+  let rangeValues = fmap fst $ mapMaybe B.readInt $ B.split '-' text
+
+  case rangeValues of
+    [begin, end] ->
+      pure [begin .. end]
+    _ -> error "Expected input to have two ranges."
