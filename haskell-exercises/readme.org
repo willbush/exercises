@@ -1,0 +1,40 @@
+* Haskell Exercises
+
+  I have solutions to various programming exercises here in Haskell.
+
+  Keep in mind that I might play with different libraries or solve some multiple
+  times to compare or benchmark different implementations.
+
+** Building and Running with Nix and Cabal
+
+   1. Get nix: https://nixos.org/nix/
+   2. Enter a nix shell ~nix-shell~ in the root of this project and GHC, Cabal,
+      and all build dependencies should be loaded automatically.
+   3. To build and run tests with ~cabal new-run haskell-exercises-test~
+   4. To run benchmarks:
+
+      #+begin_src shell
+      cabal new-configure --enable-benchmarks
+      cabal new-bench
+      #+end_src
+
+** Alternative Building and Running
+
+   This project will probably build and run with [[https://docs.haskellstack.org/en/stable/README/][stack]].
+
+   If you want to build with GHC and Cabal without Nix, then look in the
+   ~default.nix~ for what version of GHC I'm using there.
+
+   However, note that I have not tested building and running this without using
+   ~shell.nix~.
+
+** Development Setup
+
+   These are mostly notes to me in the future.
+
+   I currently use 4 terminals in a tiling window manager:
+
+   1. Running ~ghcid~.
+   2. Running ~ghcid -c "cabal new-repl haskell-exercises-test" -T=Main.main --restart=./src~.
+   3. Running ~lorri watch~.
+   4. One free to do whatever and test things in a repl using ~cabal new-repl~.
