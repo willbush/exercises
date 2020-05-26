@@ -1,6 +1,6 @@
 -- | Advent of Code 2019 day 5 solution.
 
-module AdventOfCode.Day5 (run, runProgram) where
+module AdventOfCode.Day5 (readProgram, runProgram) where
 
 import           Control.Monad.ST               ( ST
                                                 , runST
@@ -27,17 +27,6 @@ type IP = Int
 
 -- | The input to supply when opcode 3 is called
 type Input = Int
-
-run :: IO ()
-run = do
-  text <- B.readFile "../inputs/aoc/2019/input-day5.txt"
-  let program = fmap fst $ mapMaybe B.readInt $ B.split ',' text
-  putStrLn "== Day 5 =="
-  putStrLn "Part 1:"
-  print $ runProgram 1 program
-
-  putStrLn "Part 2:"
-  print $ runProgram 5 program
 
 -- | Runs a int code program and returns a list of outputs given by opcode 4.
 -- The given input is supplied to the input opcode 3.
@@ -111,3 +100,9 @@ getP1P2Values ip mem = do
   a  <- if isP1Immediate then pure p1 else A.readArray mem p1
   b  <- if isP2Immediate then pure p2 else A.readArray mem p2
   pure (a, b)
+
+-- | Read the program from the input file.
+readProgram :: IO Program
+readProgram = do
+  text <- B.readFile "../inputs/aoc/2019/input-day5.txt"
+  pure $ fmap fst $ mapMaybe B.readInt $ B.split ',' text

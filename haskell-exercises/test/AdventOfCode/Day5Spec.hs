@@ -2,7 +2,9 @@
 
 module AdventOfCode.Day5Spec (spec) where
 
-import           AdventOfCode.Day5              ( runProgram )
+import           AdventOfCode.Day5              ( readProgram
+                                                , runProgram
+                                                )
 import           Test.Hspec
 
 spec :: Spec
@@ -64,3 +66,9 @@ spec = describe "AOC Day 5" $ do
             ]
       runProgram 8 program `shouldBe` [1000]
       runProgram 800 program `shouldBe` [1001]
+
+  describe "can get solutions" $ do
+    it "can get solution for part 1 and 2" $ do
+      program <- readProgram
+      runProgram 1 program `shouldBe` [0,0,0,0,0,0,0,0,0,9938601]
+      runProgram 5 program `shouldBe` [4283952]
