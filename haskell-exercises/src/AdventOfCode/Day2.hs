@@ -33,12 +33,6 @@ type Noun = Int
 -- possible values range between [0, 99].
 type Verb = Int
 
--- | read and parse the program from input file.
-readProgram :: IO [Int]
-readProgram = do
-  text <- B.readFile "../inputs/aoc/2019/input-day2.txt"
-  pure $ fmap fst $ mapMaybe B.readInt $ B.split ',' text
-
 part1Solution :: [Int] -> Maybe Int
 part1Solution program = headMay $ runProgram $ setNounAndVerb 12 2 program
 
@@ -87,3 +81,9 @@ applyOp op address mem = do
   a             <- A.readArray mem aAddress
   b             <- A.readArray mem bAddress
   A.writeArray mem resultAddress $ op a b
+
+-- | read and parse the program from input file.
+readProgram :: IO [Int]
+readProgram = do
+  text <- B.readFile "../inputs/aoc/2019/input-day2.txt"
+  pure $ fmap fst $ mapMaybe B.readInt $ B.split ',' text
