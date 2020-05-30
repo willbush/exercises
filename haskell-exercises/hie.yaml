@@ -1,3 +1,7 @@
 cradle:
   cabal:
     component: "test:haskell-exercises-test"
+
+dependencies:
+  - shell.nix
+  - default.nix
