@@ -27,6 +27,7 @@ library
     -Wincomplete-uni-patterns
     -Wpartial-fields
     -Wredundant-constraints
+    -fplugin=Splint
   build-depends:
       base ^>=4.13.0.0
     , array
@@ -36,6 +37,7 @@ library
     , ilist
     , safe
     , utility-ht
+    , splint
 
 test-suite haskell-exercises-test
   default-language:    Haskell2010
@@ -50,6 +52,7 @@ test-suite haskell-exercises-test
     -Wincomplete-uni-patterns
     -Wpartial-fields
     -Wredundant-constraints
+    -fplugin=Splint
   build-depends:
       base ^>=4.13.0.0
     , bytestring
@@ -57,13 +60,14 @@ test-suite haskell-exercises-test
     , haskell-exercises
     , hspec
     , safe
+    , splint
     , utility-ht
     -- The following three dependencies are only here as a work around to get
     -- ghcide to working until multi-component support is available in ghcide.
     -- see https://github.com/mpickering/hie-bios/issues/190
+    , array
     , extra
     , ilist
-    , array
   other-modules:
       CommonSpec
     , ProjectEuler.ProblemsSpec
@@ -86,7 +90,9 @@ benchmark haskell-exercises-bench
     -Wincomplete-uni-patterns
     -Wpartial-fields
     -Wredundant-constraints
+    -fplugin=Splint
   build-depends:
       base ^>=4.13.0.0
-    , haskell-exercises
     , criterion
+    , haskell-exercises
+    , splint
