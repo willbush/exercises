@@ -10,12 +10,12 @@
    1. Get nix: https://nixos.org/nix/
    2. Enter a nix shell ~nix-shell~ in the root of this project and GHC, Cabal,
       and all build dependencies should be loaded automatically.
-   3. To build and run tests with ~cabal new-run haskell-exercises-test~
+   3. To build and run tests with ~cabal run haskell-exercises-test~
    4. To run benchmarks:
 
       #+begin_src shell
-      cabal new-configure --enable-benchmarks
-      cabal new-bench
+      cabal configure --enable-benchmarks
+      cabal bench
       #+end_src
 
 ** Alternative Building and Running
@@ -35,6 +35,6 @@
    I currently use 4 terminals in a tiling window manager:
 
    1. Running ~ghcid~.
-   2. Running ~ghcid -c "cabal new-repl haskell-exercises-test" -T=Main.main --restart=./src~.
+   2. Running ~ghcid -c "cabal repl haskell-exercises-test" -T=Main.main --restart=./src~.
    3. Running ~lorri watch~.
-   4. One free to do whatever and test things in a repl using ~cabal new-repl~.
+   4. One free to do whatever and test things in a repl using ~cabal repl~.
