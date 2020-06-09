@@ -1,6 +1,11 @@
 cradle:
   cabal:
-    component: "test:haskell-exercises-test"
+    - path: ./src
+      component: "lib:haskell-exercises"
+    - path: ./test
+      component: "test:haskell-exercises-test"
+    - path: ./bench
+      component: "bench:haskell-exercises-bench"
 
 dependencies:
   - shell.nix

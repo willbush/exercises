@@ -38,14 +38,14 @@ part1Solution program = headMay $ runProgram $ setNounAndVerb 12 2 program
 
 part2Solution :: [Int] -> Maybe Int
 part2Solution program = do
-  -- | "determine what pair of inputs produces the output 19690720... the output
+  -- "determine what pair of inputs produces the output 19690720... the output
   -- is available at address 0."
   let allPossibleNounVerbs = [ (n, v) | n <- [0 .. 99], v <- [0 .. 99] ]
       maybeAnswer :: Maybe ((Noun, Verb), Int)
       maybeAnswer = find (\x -> snd x == 19690720) $ fmap
         (\nv@(n, v) -> (nv, head $ runProgram $ setNounAndVerb n v program))
         allPossibleNounVerbs
-  -- | "What is 100 * noun + verb?"
+  -- "What is 100 * noun + verb?"
   fmap (\x -> let nv = fst x in 100 * fst nv + snd nv) maybeAnswer
 
 setNounAndVerb :: Noun -> Verb -> [Int] -> [Int]
