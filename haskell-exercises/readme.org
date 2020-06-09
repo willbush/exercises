@@ -32,9 +32,11 @@
 
    These are mostly notes to me in the future.
 
-   I currently use 4 terminals in a tiling window manager:
+   In addition to using ghcide in Emacs, I currently use 5 terminals in a tiling
+   window manager:
 
-   1. Running ~ghcid~.
-   2. Running ~ghcid -c "cabal repl haskell-exercises-test" -T=Main.main --restart=./src~.
-   3. Running ~lorri watch~.
-   4. One free to do whatever and test things in a repl using ~cabal repl~.
+   1. Running ~ghcid --lint~.
+   2. Running ~ghcid -c "cabal repl haskell-exercises-test" -T=Main.main --restart=./src --lint~.
+   3. Running ~ghcid -c "cabal repl haskell-exercises-bench" --restart=./src --lint~.
+   4. Running ~lorri watch~.
+   5. One free to do whatever and test things in a repl using ~cabal repl~.
