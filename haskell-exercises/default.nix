@@ -50,6 +50,7 @@ in haskellPkgs.developPackage rec {
         # avoid installing this as a system wide tool due to:
         # https://github.com/digital-asset/ghcide/issues/538
         haskellPkgs.ghcide
+        haskellPkgs.hlint
       ];
 
       inherit doBenchmark;
