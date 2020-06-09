@@ -1,5 +1,3 @@
--- {-# LANGUAGE Strict #-}
-
 module Common.Primes where
 
 primeFactors :: Int -> [Int]
