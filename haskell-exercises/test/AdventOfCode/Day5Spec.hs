@@ -44,17 +44,17 @@ spec = describe "AOC Day 5" $ do
       runProgram 7 program `shouldBe` [1]
       runProgram 8 program `shouldBe` [0]
     it "tests jump using position mode" $ do
-      -- | outputs 0 if input was 0 and 1 if input was non-zero
+      -- outputs 0 if input was 0 and 1 if input was non-zero
       let program = [3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9]
       runProgram 1 program `shouldBe` [1]
       runProgram 0 program `shouldBe` [0]
     it "tests jump using immediate mode" $ do
-      -- | outputs 0 if input was 0 and 1 if input was non-zero
+      -- outputs 0 if input was 0 and 1 if input was non-zero
       let program = [3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1]
       runProgram 123 program `shouldBe` [1]
       runProgram 0 program `shouldBe` [0]
     it "tests longer program" $ do
-      -- | The program will then output 999 if the input value is below 8,
+      -- The program will then output 999 if the input value is below 8,
       -- output 1000 if the input value is equal to 8, or output 1001 if the
       -- input value is greater than 8.
       let program =
