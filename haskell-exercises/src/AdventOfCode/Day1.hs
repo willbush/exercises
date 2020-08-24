@@ -23,5 +23,5 @@ calcFuel m = m `div` 3 - 2
 -- | read and parse module masses from input file.
 readModuleMasses :: IO [Mass]
 readModuleMasses = do
-  text <- B.readFile "../inputs/aoc/2019/input-day1.txt"
+  text <- B.readFile "./inputs/aoc/2019/input-day1.txt"
   pure $ fmap fst $ mapMaybe B.readInt $ B.lines text

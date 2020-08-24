@@ -85,5 +85,5 @@ applyOp op address mem = do
 -- | read and parse the program from input file.
 readProgram :: IO [Int]
 readProgram = do
-  text <- B.readFile "../inputs/aoc/2019/input-day2.txt"
+  text <- B.readFile "./inputs/aoc/2019/input-day2.txt"
   pure $ fmap fst $ mapMaybe B.readInt $ B.split ',' text

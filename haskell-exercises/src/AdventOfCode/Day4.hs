@@ -63,7 +63,7 @@ toDigits n = go n []
 
 readRange :: IO [Int]
 readRange = do
-  text <- B.readFile "../inputs/aoc/2019/input-day4.txt"
+  text <- B.readFile "./inputs/aoc/2019/input-day4.txt"
   let rangeValues = fmap fst $ mapMaybe B.readInt $ B.split '-' text
 
   case rangeValues of

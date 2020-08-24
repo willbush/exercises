@@ -104,5 +104,5 @@ getP1P2Values ip mem = do
 -- | Read the program from the input file.
 readProgram :: IO Program
 readProgram = do
-  text <- B.readFile "../inputs/aoc/2019/input-day5.txt"
+  text <- B.readFile "./inputs/aoc/2019/input-day5.txt"
   pure $ fmap fst $ mapMaybe B.readInt $ B.split ',' text
