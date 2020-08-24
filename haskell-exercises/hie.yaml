@@ -6,7 +6,3 @@ cradle:
       component: "test:haskell-exercises-test"
     - path: ./bench
       component: "bench:haskell-exercises-bench"
-
-dependencies:
-  - shell.nix
-  - default.nix
