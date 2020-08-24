@@ -41,7 +41,7 @@ data Direction = U | D | L | R deriving (Show, Eq)
 
 run :: IO ()
 run = do
-  text <- B.readFile "../inputs/aoc/2019/input-day3.txt"
+  text <- B.readFile "./inputs/aoc/2019/input-day3.txt"
   let wireLists = B.lines text
   case wireLists of
     [wireStr1, wireStr2] -> do
