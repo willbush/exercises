@@ -47,9 +47,7 @@ in haskellPkgs.developPackage rec {
 
       testHaskellDepends = (attrs.testHaskellDepends or [ ]) ++ [
         haskellPkgs.criterion
-        # avoid installing this as a system wide tool due to:
-        # https://github.com/digital-asset/ghcide/issues/538
-        haskellPkgs.ghcide
+        haskellPkgs.haskell-language-server
         haskellPkgs.hlint
       ];
 
