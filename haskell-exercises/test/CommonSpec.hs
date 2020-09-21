@@ -48,3 +48,17 @@ spec =
         H.reverseInt (-12)`shouldBe` (-21)
         H.reverseInt (-123)`shouldBe` (-321)
         H.reverseInt (-1234)`shouldBe` (-4321)
+
+    describe "Prime up to" $ do
+      it "returns nothing for numbers less than 2" $ do
+        P.primesTo (-1) `shouldBe` []
+        P.primesTo 0 `shouldBe` []
+        P.primesTo 1 `shouldBe` []
+      it "returns prime numbers up to a number" $ do
+        P.primesTo 2 `shouldBe` [2]
+        P.primesTo 11 `shouldBe` [2, 3, 5, 7, 11]
+        P.primesTo 23 `shouldBe` [2, 3, 5, 7, 11, 13, 17, 19, 23]
+
+    describe "infinite primes" $ do
+      it "can give first 6" $
+        take 6 P.primes `shouldBe` [2, 3, 5, 7, 11, 13]
