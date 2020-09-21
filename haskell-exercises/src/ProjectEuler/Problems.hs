@@ -3,7 +3,9 @@ module ProjectEuler.Problems where
 import           Common.Fibonacci               ( fibFast )
 import           Common.Primes                  ( primeFactors )
 import qualified Common.Helpers                as H
-import           Safe                           ( maximumMay )
+import           Safe                           ( maximumMay
+                                                , headMay
+                                                )
 
 -- | Given an number sum the natural numbers that are multiples of 3 or 5 up to,
 -- but not including the given number.
@@ -41,6 +43,17 @@ sol4 = maximumMay $ filter
   (\n -> n == H.reverseInt n)
   [ x * y | x <- [100 .. 999], y <- [100 .. x] ]
 
+-- | Problem 5 - Smallest multiple
+-- 2520 is the smallest number that can be divided by each of the numbers from 1
+-- to 10 without any remainder. What is the smallest positive number that is
+-- evenly divisible by all of the numbers from 1 to 20?
+--
+-- Note this is the first brute force thing I thought of. It works, but it's
+-- very slow for large n.
+sol5 :: Integral a => a -> Maybe a
+sol5 n =
+  let divisors = [2 .. n]
+  in  headMay $ filter (\x -> all (\d -> x `mod` d == 0) divisors) [n ..]
 
 -- | Problem 6 - Sum square difference
 -- The sum of the squares of the first ten natural numbers is:
