@@ -1,11 +1,9 @@
 module ProjectEuler.Problems where
 
 import           Common.Fibonacci               ( fibFast )
-import           Common.Primes                  ( primeFactors )
+import qualified Common.Primes                 as P
 import qualified Common.Helpers                as H
-import           Safe                           ( maximumMay
-                                                , headMay
-                                                )
+import qualified Safe                          as S
 
 -- | Given an number sum the natural numbers that are multiples of 3 or 5 up to,
 -- but not including the given number.
@@ -32,14 +30,14 @@ sol2 = sum $ takeWhile (< 4000000) $ filter even $ fmap fibFast [0 ..]
 -- The prime factors of 13195 are 5, 7, 13 and 29.
 -- What is the largest prime factor of the number 600851475143 ?
 sol3 :: Maybe Int
-sol3 = maximumMay $ primeFactors 600851475143
+sol3 = S.maximumMay $ P.primeFactors 600851475143
 
 -- | Problem 4 - Largest palindrome product:
 -- A palindromic number reads the same both ways. The largest palindrome made
 -- from the product of two 2-digit numbers is 9009 = 91 × 99. Find the largest
 -- palindrome made from the product of two 3-digit numbers.
 sol4 :: Maybe Int
-sol4 = maximumMay $ filter
+sol4 = S.maximumMay $ filter
   (\n -> n == H.reverseInt n)
   [ x * y | x <- [100 .. 999], y <- [100 .. x] ]
 
@@ -50,10 +48,10 @@ sol4 = maximumMay $ filter
 --
 -- Note this is the first brute force thing I thought of. It works, but it's
 -- very slow for large n.
-sol5 :: Integral a => a -> Maybe a
+sol5 :: Int -> Maybe Int
 sol5 n =
-  let divisors = [2 .. n]
-  in  headMay $ filter (\x -> all (\d -> x `mod` d == 0) divisors) [n ..]
+  let divisors = [2..n]
+  in  S.headMay $ filter (\x -> all (\d -> x `mod` d == 0) divisors) [n ..]
 
 -- | Problem 6 - Sum square difference
 -- The sum of the squares of the first ten natural numbers is:
@@ -78,3 +76,10 @@ sol6 n =
       sumOfSquares = sum $ square <$> nums
       squareOfSum  = square $ sum nums
   in  squareOfSum - sumOfSquares
+
+-- | Problem 7 - 10001st prime
+-- By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see
+-- that the 6th prime is 13.
+-- What is the 10001st prime number?
+sol7 :: Int -> Maybe Int
+sol7 n = S.lastMay $ take n P.primes
