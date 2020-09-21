@@ -44,3 +44,8 @@ spec =
       it "should be the expected answer" $ do
       P.sol7 (6 :: Int) `shouldBe` Just 13
       P.sol7 (10001 :: Int) `shouldBe` Just 104743
+
+    describe "Problem 8" $
+      it "should be the expected answer" $ do
+      P.sol8 4 `shouldBe` Just 5832
+      P.sol8 13 `shouldBe` Just 23514624000
