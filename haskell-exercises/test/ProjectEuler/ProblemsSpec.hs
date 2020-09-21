@@ -29,6 +29,12 @@ spec =
       it "should be the expected answer" $
       P.sol4 `shouldBe` Just 906609
 
+    describe "Problem 5" $
+      it "should be the expected answer" $
+      -- not including the actual answer here because it's slow to compute with
+      -- my brute force approach.
+      P.sol5 (10 :: Int) `shouldBe` Just 2520
+
     describe "Problem 6" $
       it "should be the expected answer" $ do
       P.sol6 (10 :: Int) `shouldBe` 2640
