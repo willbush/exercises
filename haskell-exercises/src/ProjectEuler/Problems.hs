@@ -40,3 +40,28 @@ sol4 :: Maybe Int
 sol4 = maximumMay $ filter
   (\n -> n == H.reverseInt n)
   [ x * y | x <- [100 .. 999], y <- [100 .. x] ]
+
+
+-- | Problem 6 - Sum square difference
+-- The sum of the squares of the first ten natural numbers is:
+--
+--   (1^2 + 2^2 + .. + 10^2) = 385
+--
+-- The square of the sum of the first ten natural numbers is:
+--
+--   (1 + 2 + .. + 10)^2 = 55^2 = 3025
+--
+-- Hence the difference between the sum of the squares of the first ten natural
+-- numbers and the square of the sum is
+--
+-- 3025 - 385 = 2640
+--
+-- Find the difference between the sum of the squares of the first one hundred
+-- natural numbers and the square of the sum.
+sol6 :: Integral a => a -> a
+sol6 n =
+  let square x = x * x
+      nums         = [1 .. n]
+      sumOfSquares = sum $ square <$> nums
+      squareOfSum  = square $ sum nums
+  in  squareOfSum - sumOfSquares
