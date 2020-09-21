@@ -28,3 +28,8 @@ spec =
     describe "Problem 4" $
       it "should be the expected answer" $
       P.sol4 `shouldBe` Just 906609
+
+    describe "Problem 6" $
+      it "should be the expected answer" $ do
+      P.sol6 (10 :: Int) `shouldBe` 2640
+      P.sol6 (100 :: Int) `shouldBe` 25164150
