@@ -4,6 +4,7 @@ import           Common.Fibonacci               ( fibFast )
 import qualified Common.Primes                 as P
 import qualified Common.Helpers                as H
 import           Data.List.Split                ( divvy )
+import           Data.List                      ( find )
 import qualified Safe                          as S
 
 -- | Given an number sum the natural numbers that are multiples of 3 or 5 up to,
@@ -72,10 +73,9 @@ sol5 n =
 -- natural numbers and the square of the sum.
 sol6 :: Integral a => a -> a
 sol6 n =
-  let square x = x * x
-      nums         = [1 .. n]
-      sumOfSquares = sum $ square <$> nums
-      squareOfSum  = square $ sum nums
+  let nums         = [1 .. n]
+      sumOfSquares = sum $ fmap H.square nums
+      squareOfSum  = H.square $ sum nums
   in  squareOfSum - sumOfSquares
 
 -- | Problem 7 - 10001st prime
@@ -137,3 +137,17 @@ sol8 numAdjacent = S.maximumMay $ product <$> divvy numAdjacent 1 input
     , 7, 1, 6, 3, 6, 2, 6, 9, 5, 6, 1, 8, 8, 2, 6, 7, 0, 4, 2, 8, 2, 5, 2, 4, 8
     , 3, 6, 0, 0, 8, 2, 3, 2, 5, 7, 5, 3, 0, 4, 2, 0, 7, 5, 2, 9, 6, 3, 4, 5, 0
     ]
+
+-- | Problem 9 - Special Pythagorean triplet
+-- A Pythagorean triplet is a set of three natural numbers, a < b < c, for which,
+-- a^2 + b^2 = c^2
+--
+-- For example, 3^2 + 4^2 = 9 + 16 = 25 = 5^2.
+--
+-- There exists exactly one Pythagorean triplet for which a + b + c = 1000.
+-- Find the product abc.
+sol9 :: Maybe [Int]
+sol9 = find (\xs -> sum xs == 1000) $ filter isTriplet $ divvy 3 1 [1 .. 1000]
+ where
+  isTriplet [a, b, c] = H.square a + H.square b == H.square c
+  isTriplet _         = False

@@ -49,3 +49,7 @@ spec =
       it "should be the expected answer" $ do
       P.sol8 4 `shouldBe` Just 5832
       P.sol8 13 `shouldBe` Just 23514624000
+
+    describe "Problem 9" $
+      it "should be the expected answer" $
+      P.sol9 `shouldBe` Just [1, 2, 3]
