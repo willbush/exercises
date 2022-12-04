@@ -2,6 +2,6 @@
 name = "rust-exercises"
 version = "0.1.0"
 authors = ["willbush <will.g.bush@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
