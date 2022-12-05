@@ -1,5 +1,4 @@
 /// https://adventofcode.com/2022/day/1
-
 use std::{
     fs::File,
     io::{BufRead, BufReader},
@@ -8,11 +7,18 @@ use std::{
 fn main() -> std::io::Result<()> {
     let file = File::open("../inputs/aoc/2022/day1.txt")?;
     let mut reader = BufReader::new(file);
-    let elves = parse(&mut reader);
+    let mut elves = parse(&mut reader);
 
-    if let Some(max) = elves.iter().max_by_key(|e| e.total_calories) {
-        println!("{}", max.total_calories);
+    // reverse sort.
+    elves.sort_by(|a, b| b.total_calories.cmp(&a.total_calories));
+
+    if let Some(max) = elves.first() {
+        println!("part 1: {}", max.total_calories);
     }
+
+    let total_top_three: u32 = elves.iter().map(|e| e.total_calories).take(3).sum();
+
+    println!("part 2: {}", total_top_three);
 
     Ok(())
 }
