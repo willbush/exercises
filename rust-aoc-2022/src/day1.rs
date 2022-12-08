@@ -4,7 +4,7 @@ use std::{
     io::{BufRead, BufReader},
 };
 
-fn main() -> std::io::Result<()> {
+pub fn run() -> std::io::Result<()> {
     let file = File::open("../inputs/aoc/2022/day1.txt")?;
     let mut reader = BufReader::new(file);
     let mut elves = parse(&mut reader);
