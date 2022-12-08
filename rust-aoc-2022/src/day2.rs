@@ -4,6 +4,8 @@ use std::{
     io::{BufRead, BufReader},
 };
 
+use crate::utils::parse_lines;
+
 pub fn run() -> std::io::Result<()> {
     let file = File::open("../inputs/aoc/2022/day2.txt")?;
     let mut reader = BufReader::new(file);
@@ -28,22 +30,17 @@ where
     R: BufRead,
 {
     let mut scores = Vec::new();
-    let mut line = String::with_capacity(5);
 
-    // Read the file line by line.
-    while let Ok(bytes_read) = reader.read_line(&mut line) {
-        if bytes_read == 0 {
-            break; // EOF reached
-        }
-        let cs = line.trim_end().chars().collect::<Vec<_>>();
+    parse_lines(reader, 5, |line| {
+        let cs = line.chars().collect::<Vec<_>>();
 
         if let (Some(&my), Some(&theirs)) = (cs.first(), cs.last()) {
             if let (Some(my_rps), Some(their_rps)) = (char_to_rps(my), char_to_rps(theirs)) {
                 scores.push(calc_my_score(&my_rps, &their_rps));
             }
         }
-        line.clear();
-    }
+    });
+
     scores
 }
 

@@ -2,34 +2,21 @@
 use std::{
     collections::HashSet,
     fs::File,
-    io::{BufRead, BufReader},
+    io::BufReader,
 };
+
+use crate::utils::parse_lines;
 
 pub fn run() -> std::io::Result<()> {
     let file = File::open("../inputs/aoc/2022/day3.txt")?;
     let mut reader = BufReader::new(file);
 
-    let result = parse(&mut reader);
+    // let result = parse(&mut reader);
 
-    println!("Day 3");
-    println!("part 1: {}", result);
-
-    Ok(())
-}
-
-fn parse<R>(reader: &mut R) -> usize
-where
-    R: BufRead,
-{
     let mut result = 0;
-    let mut line = String::with_capacity(100);
 
-    // Read the file line by line.
-    while let Ok(bytes_read) = reader.read_line(&mut line) {
-        if bytes_read == 0 {
-            break; // EOF reached
-        }
-        let items = line.trim_end().chars().collect::<Vec<_>>();
+    parse_lines(&mut reader, 100, |line| {
+        let items = line.chars().collect::<Vec<_>>();
         let mid = items.len() / 2;
 
         let fst: HashSet<&char> = HashSet::from_iter(items[..mid].iter());
@@ -38,10 +25,12 @@ where
         for &item in fst.intersection(&snd) {
             result += priority(*item);
         }
+    });
 
-        line.clear();
-    }
-    result
+    println!("Day 3");
+    println!("part 1: {}", result);
+
+    Ok(())
 }
 
 // Calculate the priority for a given char (item).

@@ -1,6 +1,7 @@
 mod day1;
 mod day2;
 mod day3;
+mod utils;
 
 fn main() -> std::io::Result<()> {
     day1::run()?;

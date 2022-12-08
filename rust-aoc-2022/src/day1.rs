@@ -4,6 +4,8 @@ use std::{
     io::{BufRead, BufReader},
 };
 
+use crate::utils::parse_lines;
+
 pub fn run() -> std::io::Result<()> {
     let file = File::open("../inputs/aoc/2022/day1.txt")?;
     let mut reader = BufReader::new(file);
@@ -42,22 +44,15 @@ where
 {
     let mut elves = Vec::new();
     let mut total_calories = 0;
-    let mut line = String::with_capacity(20);
 
-    // Read the file line by line.
-    while let Ok(bytes_read) = reader.read_line(&mut line) {
-        if bytes_read == 0 {
-            break; // EOF reached
-        }
-
+    parse_lines(reader, 20, |line| {
         if let Ok(calories) = line.trim_end().parse::<u32>() {
             total_calories += calories;
         } else if total_calories > 0 {
             elves.push(Elf::new(total_calories));
             total_calories = 0;
         }
-        line.clear();
-    }
+    });
     if total_calories > 0 {
         elves.push(Elf::new(total_calories));
     }
