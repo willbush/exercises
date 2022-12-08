@@ -1,5 +1,6 @@
-/// https://adventofcode.com/2022/day/1
+/// https://adventofcode.com/2022/day/3
 use std::{
+    collections::HashSet,
     fs::File,
     io::{BufRead, BufReader},
 };
@@ -8,16 +9,19 @@ pub fn run() -> std::io::Result<()> {
     let file = File::open("../inputs/aoc/2022/day3.txt")?;
     let mut reader = BufReader::new(file);
 
-    let mut sacks = parse(&mut reader);
+    let result = parse(&mut reader);
+
+    println!("Day 3");
+    println!("part 1: {}", result);
 
     Ok(())
 }
 
-fn parse<R>(reader: &mut R) -> Vec<RuckSack>
+fn parse<R>(reader: &mut R) -> usize
 where
     R: BufRead,
 {
-    let mut sacks = Vec::new();
+    let mut result = 0;
     let mut line = String::with_capacity(100);
 
     // Read the file line by line.
@@ -27,38 +31,27 @@ where
         }
         let items = line.trim_end().chars().collect::<Vec<_>>();
         let mid = items.len() / 2;
-        let first = items[..mid].to_vec();
-        let second = items[mid..].to_vec();
 
-        sacks.push(RuckSack::new(first, second));
+        let fst: HashSet<&char> = HashSet::from_iter(items[..mid].iter());
+        let snd: HashSet<&char> = HashSet::from_iter(items[mid..].iter());
+
+        for &item in fst.intersection(&snd) {
+            result += priority(*item);
+        }
 
         line.clear();
     }
-    sacks
-}
-
-struct RuckSack {
-    fst_compartment: Vec<char>,
-    snd_compartment: Vec<char>,
-}
-
-impl RuckSack {
-    fn new(fst_compartment: Vec<char>, snd_compartment: Vec<char>) -> Self {
-        Self {
-            fst_compartment,
-            snd_compartment,
-        }
-    }
+    result
 }
 
 // Calculate the priority for a given char (item).
-fn priority(c: char) -> u8 {
+fn priority(c: char) -> usize {
     if c.is_lowercase() {
         // a..=z have priority 1..=26
-        c as u8 - ('a' as u8) + 1
+        c as usize - ('a' as usize) + 1
     } else {
         // A..=Z have priority 27..=52
-        c as u8 - ('A' as u8) + 27
+        c as usize - ('A' as usize) + 27
     }
 }
 
