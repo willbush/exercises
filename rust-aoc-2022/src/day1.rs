@@ -12,6 +12,7 @@ pub fn run() -> std::io::Result<()> {
     // reverse sort.
     elves.sort_by(|a, b| b.total_calories.cmp(&a.total_calories));
 
+    println!("Day 1");
     if let Some(max) = elves.first() {
         println!("part 1: {}", max.total_calories);
     }
