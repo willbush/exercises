@@ -10,6 +10,7 @@ pub fn run() -> std::io::Result<()> {
 
     // The number of assignment pairs that fully contain the other.
     let mut total_fully_contain_ranges = 0;
+    let mut total_overlaps = 0;
 
     parse_lines(&mut reader, 20, |line| {
         let mut xs = line.split(&pattern);
@@ -24,6 +25,9 @@ pub fn run() -> std::io::Result<()> {
             (Some(a), Some(b), Some(x), Some(y)) => {
                 if (a <= x && b >= y) || (x <= a && y >= b) {
                     total_fully_contain_ranges += 1;
+                    total_overlaps += 1;
+                } else if (a <= x && b >= x) || (a <= y && b >= y) {
+                    total_overlaps += 1;
                 }
             }
             _ => panic!("Invalid input"),
@@ -32,11 +36,7 @@ pub fn run() -> std::io::Result<()> {
 
     println!("Day 4");
     println!("part 1: {}", total_fully_contain_ranges);
+    println!("part 2: {}", total_overlaps);
 
     Ok(())
-}
-
-#[cfg(test)]
-mod day4_tests {
-    use super::*;
 }
