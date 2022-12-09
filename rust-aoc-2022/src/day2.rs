@@ -34,9 +34,9 @@ where
     parse_lines(reader, 5, |line| {
         let cs = line.chars().collect::<Vec<_>>();
 
-        if let (Some(&my), Some(&theirs)) = (cs.first(), cs.last()) {
-            if let (Some(my_rps), Some(their_rps)) = (char_to_rps(my), char_to_rps(theirs)) {
-                scores.push(calc_my_score(&my_rps, &their_rps));
+        if let (Some(&theirs), Some(&my)) = (cs.first(), cs.last()) {
+            if let (Some(their_rps), Some(my_rps)) = (char_to_rps(theirs), char_to_rps(my)) {
+                scores.push(calc_my_score(&their_rps, &my_rps));
             }
         }
     });
@@ -53,17 +53,17 @@ fn char_to_rps(c: char) -> Option<RPS> {
     }
 }
 
-fn calc_my_score(my_rps: &RPS, their_rps: &RPS) -> Score {
-    match (my_rps, their_rps) {
-        (RPS::Rock, RPS::Scissors) => 1 + 6,
+fn calc_my_score(their_rps: &RPS, my_rps: &RPS) -> Score {
+    match (their_rps, my_rps) {
         (RPS::Rock, RPS::Rock) => 1 + 3,
-        (RPS::Rock, RPS::Paper) => 1 + 0,
-        (RPS::Paper, RPS::Rock) => 2 + 6,
+        (RPS::Rock, RPS::Paper) => 2 + 6,
+        (RPS::Rock, RPS::Scissors) => 3 + 0,
+        (RPS::Paper, RPS::Rock) => 1 + 0,
         (RPS::Paper, RPS::Paper) => 2 + 3,
-        (RPS::Paper, RPS::Scissors) => 2 + 0,
-        (RPS::Scissors, RPS::Paper) => 3 + 6,
+        (RPS::Paper, RPS::Scissors) => 3 + 6,
+        (RPS::Scissors, RPS::Rock) => 1 + 6,
+        (RPS::Scissors, RPS::Paper) => 2 + 0,
         (RPS::Scissors, RPS::Scissors) => 3 + 3,
-        (RPS::Scissors, RPS::Rock) => 3 + 0,
     }
 }
 
@@ -79,7 +79,7 @@ C Z";
 
         let mut reader = BufReader::new(input.as_bytes());
         let scores = parse_to_my_scores(&mut reader);
-        assert_eq!(vec![1, 8, 6], scores);
+        assert_eq!(vec![8, 1, 6], scores);
     }
 
     #[test]
@@ -90,7 +90,7 @@ A Y ";
 
         let mut reader = BufReader::new(input.as_bytes());
         let scores = parse_to_my_scores(&mut reader);
-        assert_eq!(vec![8, 7, 1], scores);
+        assert_eq!(vec![1, 3, 8], scores);
     }
 
     #[test]
@@ -109,6 +109,6 @@ B Y";
 
         let mut reader = BufReader::new(input.as_bytes());
         let scores = parse_to_my_scores(&mut reader);
-        assert_eq!(vec![9, 6, 5, 5, 5, 1, 9, 5, 9, 9, 5], scores);
+        assert_eq!(vec![2, 6, 5, 5, 5, 8, 2, 5, 2, 2, 5], scores);
     }
 }
