@@ -67,7 +67,7 @@ fn priority(c: char) -> usize {
 }
 
 #[cfg(test)]
-mod day1_tests {
+mod day3_tests {
     use super::*;
 
     #[test]

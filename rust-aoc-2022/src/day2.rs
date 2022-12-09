@@ -1,4 +1,4 @@
-/// https://adventofcode.com/2022/day/1
+/// https://adventofcode.com/2022/day/2
 use std::{
     fs::File,
     io::{BufRead, BufReader},
@@ -113,7 +113,7 @@ fn calc_my_score(their_rps: &RPS, my_rps: &RPS) -> Score {
 }
 
 #[cfg(test)]
-mod day1_tests {
+mod day2_tests {
     use super::*;
 
     #[test]

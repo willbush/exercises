@@ -49,6 +49,8 @@ where
 ///     println!("{}, {}, {}", line1, line2, line3);
 /// });
 /// ```
+///
+/// TODO: could this be made into a macro generating the code of N lines?
 pub fn parse_lines_by3<R, F>(reader: &mut R, capacity: usize, mut parser: F)
 where
     R: BufRead,
