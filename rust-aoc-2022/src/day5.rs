@@ -3,6 +3,25 @@ use std::{collections::VecDeque, fs::File, io::BufReader};
 
 use crate::utils::parse_lines;
 
+#[derive(Debug)]
+struct Command {
+    quantity: usize,
+    source: usize,
+    destination: usize,
+}
+
+impl Command {
+    fn new(quantity: usize, source: usize, destination: usize) -> Self {
+        Self {
+            quantity,
+            source,
+            destination,
+        }
+    }
+}
+
+type Crates = Vec<VecDeque<char>>;
+
 pub fn run() -> std::io::Result<()> {
     let file = File::open("../inputs/aoc/2022/day5.txt")?;
     let reader = BufReader::new(file);
@@ -17,7 +36,7 @@ pub fn run() -> std::io::Result<()> {
     // [F] [R] [C] [F] [L] [Q] [F] [D] [P]
     //  1   2   3   4   5   6   7   8   9
 
-    let mut crate_stacks = vec![
+    let crate_stacks = vec![
         VecDeque::from(vec!['F', 'D', 'B', 'Z', 'T', 'J', 'R', 'N']),
         VecDeque::from(vec!['R', 'S', 'N', 'J', 'H']),
         VecDeque::from(vec!['C', 'R', 'N', 'J', 'G', 'Z', 'F', 'Q']),
@@ -31,27 +50,55 @@ pub fn run() -> std::io::Result<()> {
 
     let commands = parse_commands(reader);
 
-    run_commands(&commands, &mut crate_stacks);
-
     println!("Day 5");
 
-    println!("part 1: {}", String::from_iter(top_each_stack(&crate_stacks)));
+    let result_9000 = crate_mover_9000(&commands, &crate_stacks);
+
+    println!(
+        "part 1: {}",
+        String::from_iter(top_each_stack(&result_9000))
+    );
+
+    let result_9001 = crate_mover_9001(&commands, &crate_stacks);
+
+    println!(
+        "part 2: {}",
+        String::from_iter(top_each_stack(&result_9001))
+    );
 
     Ok(())
 }
 
-fn run_commands(commands: &Vec<Command>, crate_stacks: &mut Vec<VecDeque<char>>) {
+fn crate_mover_9000(commands: &Vec<Command>, crates: &Crates) -> Crates {
+    let mut result = crates.clone();
+
     for c in commands {
         for _ in 0..c.quantity {
-            if let Some(x) = crate_stacks[c.source - 1].pop_back() {
-                crate_stacks[c.destination - 1].push_back(x);
+            if let Some(x) = result[c.source - 1].pop_back() {
+                result[c.destination - 1].push_back(x);
             }
         }
     }
+    result
 }
 
-fn top_each_stack(crate_stacks: &Vec<VecDeque<char>>) -> Vec<char> {
-    crate_stacks
+fn crate_mover_9001(commands: &Vec<Command>, crates: &Crates) -> Crates {
+    let mut result = crates.clone();
+
+    for c in commands {
+        let mut crates: VecDeque<char> = (0..c.quantity)
+            .filter_map(|_| result[c.source - 1].pop_back())
+            .collect();
+
+        while let Some(x) = crates.pop_back() {
+            result[c.destination - 1].push_back(x);
+        }
+    }
+    result
+}
+
+fn top_each_stack(crates: &Crates) -> Vec<char> {
+    crates
         .iter()
         .map(|s| s.back().unwrap_or(&' '))
         .cloned()
@@ -89,49 +136,32 @@ fn parse_commands(mut reader: BufReader<File>) -> Vec<Command> {
     commands
 }
 
-#[derive(Debug)]
-struct Command {
-    quantity: usize,
-    source: usize,
-    destination: usize,
-}
-
-impl Command {
-    fn new(quantity: usize, source: usize, destination: usize) -> Self {
-        Self {
-            quantity,
-            source,
-            destination,
-        }
-    }
-}
-
 #[cfg(test)]
 mod day5_tests {
     use super::*;
 
     #[test]
-    fn simple_crane() {
+    fn test_simple_crate_mover_9000() {
         // [A] [B]
         //  1   2
-        let mut crate_stacks = vec![VecDeque::from(vec!['A']), VecDeque::from(vec!['B'])];
+        let crate_stacks = vec![VecDeque::from(vec!['A']), VecDeque::from(vec!['B'])];
         // move 1 from 1 to 2
         let commands = vec![Command::new(1, 1, 2)];
-        run_commands(&commands, &mut crate_stacks);
+        let result = crate_mover_9000(&commands, &crate_stacks);
 
         let expected_stacks = vec![VecDeque::from(vec![]), VecDeque::from(vec!['B', 'A'])];
 
-        assert_eq!(expected_stacks, crate_stacks);
+        assert_eq!(expected_stacks, result);
     }
 
     #[test]
-    fn test_crane() {
+    fn test_crate_mover_9000() {
         //     [D]
         // [N] [C]
         // [Z] [M] [P]
         //  1   2   3
 
-        let mut crate_stacks = vec![
+        let crate_stacks = vec![
             VecDeque::from(vec!['Z', 'N']),
             VecDeque::from(vec!['M', 'C', 'D']),
             VecDeque::from(vec!['P']),
@@ -147,7 +177,7 @@ mod day5_tests {
             Command::new(2, 2, 1),
             Command::new(1, 1, 2),
         ];
-        run_commands(&commands, &mut crate_stacks);
+        let result = crate_mover_9000(&commands, &crate_stacks);
 
         let expected_stacks = vec![
             VecDeque::from(vec!['C']),
@@ -155,7 +185,42 @@ mod day5_tests {
             VecDeque::from(vec!['P', 'D', 'N', 'Z']),
         ];
 
-        assert_eq!(expected_stacks, crate_stacks);
-        assert_eq!(vec!['C', 'M', 'Z'], top_each_stack(&crate_stacks));
+        assert_eq!(expected_stacks, result);
+        assert_eq!(vec!['C', 'M', 'Z'], top_each_stack(&result));
+    }
+
+    #[test]
+    fn test_crate_mover_9001() {
+        //     [D]
+        // [N] [C]
+        // [Z] [M] [P]
+        //  1   2   3
+
+        let crate_stacks = vec![
+            VecDeque::from(vec!['Z', 'N']),
+            VecDeque::from(vec!['M', 'C', 'D']),
+            VecDeque::from(vec!['P']),
+        ];
+
+        // move 1 from 2 to 1
+        // move 3 from 1 to 3
+        // move 2 from 2 to 1
+        // move 1 from 1 to 2
+        let commands = vec![
+            Command::new(1, 2, 1),
+            Command::new(3, 1, 3),
+            Command::new(2, 2, 1),
+            Command::new(1, 1, 2),
+        ];
+        let result = crate_mover_9001(&commands, &crate_stacks);
+
+        let expected_stacks = vec![
+            VecDeque::from(vec!['M']),
+            VecDeque::from(vec!['C']),
+            VecDeque::from(vec!['P', 'Z', 'N', 'D']),
+        ];
+
+        assert_eq!(expected_stacks, result);
+        assert_eq!(vec!['M', 'C', 'D'], top_each_stack(&result));
     }
 }
