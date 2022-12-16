@@ -1,5 +1,44 @@
 use std::io::BufRead;
 
+/// Count the number of rows (lines) in a file as well as the maximum line
+/// length (number of columns (characters) in a row) without counting the new
+/// line LF character.
+///
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// let file = File::open("your-file.txt")?;
+/// let mut reader = BufReader::new(file);
+///
+/// let (rows, cols) = count_rows_cols(&mut reader);
+/// println!("rows: {}", rows);
+/// println!("cols: {}", cols);
+/// ```
+pub fn count_rows_cols<R>(reader: &mut R) -> (usize, usize)
+where
+    R: BufRead,
+{
+    let mut line = String::with_capacity(500);
+    let mut rows = 0;
+    let mut cols = 0;
+
+    // Read the file line by line.
+    while let Ok(bytes_read) = reader.read_line(&mut line) {
+        if bytes_read == 0 {
+            break; // EOF reached
+        }
+        let bytes_read_without_lf = bytes_read - 1;
+
+        if cols < bytes_read_without_lf {
+            cols = bytes_read_without_lf;
+        }
+        rows += 1;
+    }
+    (rows, cols)
+}
+
 /// Apply the given parse function to each line of the reader until EOF. Line
 /// endings are trimmed off. Uses a string buffer of the given capacity to avoid
 /// string allocation for each line.
