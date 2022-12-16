@@ -17,7 +17,7 @@ pub fn run() -> std::io::Result<()> {
 
     println!("Day 7");
     println!(
-        "Part 1: {}",
+        "- Part 1: {}",
         dir_to_total_size
             .values()
             .filter(|&&size| size <= 100_000)
@@ -33,7 +33,7 @@ pub fn run() -> std::io::Result<()> {
             .filter(|&&size| size >= space_needed_for_update)
             .min();
 
-        println!("Part 1: {:?}", size_dir_to_delete);
+        println!("- Part 2: {:?}", size_dir_to_delete);
     }
 
     Ok(())

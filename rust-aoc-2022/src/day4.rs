@@ -35,8 +35,8 @@ pub fn run() -> std::io::Result<()> {
     });
 
     println!("Day 4");
-    println!("part 1: {}", total_fully_contain_ranges);
-    println!("part 2: {}", total_overlaps);
+    println!("- Part 1: {}", total_fully_contain_ranges);
+    println!("- Part 2: {}", total_overlaps);
 
     Ok(())
 }

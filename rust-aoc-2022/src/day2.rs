@@ -15,8 +15,8 @@ pub fn run() -> std::io::Result<()> {
     let snd_strat_total_score: Score = scores.iter().map(|x| x.1).sum();
 
     println!("Day 2");
-    println!("part 1: {}", fst_strat_total_score);
-    println!("part 2: {}", snd_strat_total_score);
+    println!("- Part 1: {}", fst_strat_total_score);
+    println!("- Part 2: {}", snd_strat_total_score);
 
     Ok(())
 }

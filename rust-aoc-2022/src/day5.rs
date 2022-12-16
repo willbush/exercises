@@ -55,14 +55,14 @@ pub fn run() -> std::io::Result<()> {
     let result_9000 = crate_mover_9000(&commands, &crate_stacks);
 
     println!(
-        "part 1: {}",
+        "- Part 1: {}",
         String::from_iter(top_each_stack(&result_9000))
     );
 
     let result_9001 = crate_mover_9001(&commands, &crate_stacks);
 
     println!(
-        "part 2: {}",
+        "- Part 2: {}",
         String::from_iter(top_each_stack(&result_9001))
     );
 

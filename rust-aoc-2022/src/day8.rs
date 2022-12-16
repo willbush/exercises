@@ -25,7 +25,7 @@ pub fn run() -> std::io::Result<()> {
     });
 
     println!("Day 8");
-    println!("Part 1: {:?}", count_visible_trees(&grid));
+    println!("- Part 1: {:?}", count_visible_trees(&grid));
 
     Ok(())
 }

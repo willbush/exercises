@@ -27,7 +27,7 @@ pub fn run() -> std::io::Result<()> {
     });
 
     println!("Day 3");
-    println!("part 1: {}", part1_result);
+    println!("- Part 1: {}", part1_result);
 
     let mut part2_result = 0;
 
@@ -39,7 +39,7 @@ pub fn run() -> std::io::Result<()> {
         }
     });
 
-    println!("part 2: {}", part2_result);
+    println!("- Part 2: {}", part2_result);
 
     Ok(())
 }

@@ -16,12 +16,12 @@ pub fn run() -> std::io::Result<()> {
 
     println!("Day 1");
     if let Some(max) = elves.first() {
-        println!("part 1: {}", max.total_calories);
+        println!("- Part 1: {}", max.total_calories);
     }
 
     let total_top_three: u32 = elves.iter().map(|e| e.total_calories).take(3).sum();
 
-    println!("part 2: {}", total_top_three);
+    println!("- Part 2: {}", total_top_three);
 
     Ok(())
 }

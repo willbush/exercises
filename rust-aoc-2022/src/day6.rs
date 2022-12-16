@@ -5,8 +5,8 @@ pub fn run() -> std::io::Result<()> {
     let input = read_to_string("../inputs/aoc/2022/day6.txt")?;
 
     println!("Day 6");
-    println!("Part 1: {:?}", find_marker(&input, 4));
-    println!("Part 2: {:?}", find_marker(&input, 14));
+    println!("- Part 1: {:?}", find_marker(&input, 4));
+    println!("- Part 2: {:?}", find_marker(&input, 14));
 
     Ok(())
 }
