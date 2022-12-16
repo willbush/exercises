@@ -1,3 +1,4 @@
+/// https://adventofcode.com/2022/day/7
 use std::{
     collections::BTreeMap,
     fs::File,
@@ -7,20 +8,33 @@ use std::{
 
 use crate::utils::parse_lines;
 
-/// https://adventofcode.com/2022/day/7
-
 pub fn run() -> std::io::Result<()> {
     let file = File::open("../inputs/aoc/2022/day7.txt")?;
     let mut reader = BufReader::new(file);
 
     let cmds = parse(&mut reader);
-    let pwds = discover_dir_sizes(&cmds);
+    let dir_to_total_size = discover_dir_sizes(&cmds);
 
     println!("Day 7");
     println!(
         "Part 1: {}",
-        pwds.values().filter(|&&size| size <= 100_000).sum::<usize>()
+        dir_to_total_size
+            .values()
+            .filter(|&&size| size <= 100_000)
+            .sum::<usize>()
     );
+
+    if let Some(total_used_space) = dir_to_total_size.get(&PathBuf::from("/")) {
+        let total_unused_space = 70_000_000 - total_used_space;
+        let space_needed_for_update = 30_000_000 - total_unused_space;
+
+        let size_dir_to_delete = dir_to_total_size
+            .values()
+            .filter(|&&size| size >= space_needed_for_update)
+            .min();
+
+        println!("Part 1: {:?}", size_dir_to_delete);
+    }
 
     Ok(())
 }
@@ -34,7 +48,7 @@ enum Cmd {
 #[derive(Debug, Clone, PartialEq)]
 enum LsOutput {
     Dir { name: String },
-    File { name: String, size: usize },
+    File { size: usize },
 }
 
 fn parse<R>(reader: &mut R) -> Vec<Cmd>
@@ -77,8 +91,7 @@ where
                         });
                     } else if let Ok(size) = fst.parse() {
                         ls_output.push(LsOutput::File {
-                            name: snd.to_string(),
-                            size,
+                            size
                         });
                     }
                 }
@@ -119,7 +132,7 @@ fn discover_dir_sizes(cmds: &[Cmd]) -> BTreeMap<PathBuf, usize> {
                             path.push(name);
                             _ = result.try_insert(path, 0);
                         }
-                        LsOutput::File { name, size } => {
+                        LsOutput::File { size } => {
                             for i in 0..pwd.len() {
                                 let path: PathBuf = pwd[..=i].iter().collect();
 
@@ -184,11 +197,9 @@ $ ls
                         name: "a".to_string(),
                     },
                     LsOutput::File {
-                        name: "b.txt".to_string(),
                         size: 14848514,
                     },
                     LsOutput::File {
-                        name: "c.dat".to_string(),
                         size: 8504156,
                     },
                     LsOutput::Dir {
@@ -205,15 +216,12 @@ $ ls
                         name: "e".to_string(),
                     },
                     LsOutput::File {
-                        name: "f".to_string(),
                         size: 29116,
                     },
                     LsOutput::File {
-                        name: "g".to_string(),
                         size: 2557,
                     },
                     LsOutput::File {
-                        name: "h.lst".to_string(),
                         size: 62596,
                     },
                 ],
@@ -223,7 +231,6 @@ $ ls
             },
             Cmd::Ls {
                 output: vec![LsOutput::File {
-                    name: "i".to_string(),
                     size: 584,
                 }],
             },
@@ -239,19 +246,15 @@ $ ls
             Cmd::Ls {
                 output: vec![
                     LsOutput::File {
-                        name: "j".to_string(),
                         size: 4060174,
                     },
                     LsOutput::File {
-                        name: "d.log".to_string(),
                         size: 8033020,
                     },
                     LsOutput::File {
-                        name: "d.ext".to_string(),
                         size: 5626152,
                     },
                     LsOutput::File {
-                        name: "k".to_string(),
                         size: 7214296,
                     },
                 ],
@@ -263,7 +266,7 @@ $ ls
 
     #[test]
     fn test_discover_dir_sizes() {
-        let cmds = vec![
+        let cmds: Vec<Cmd> = vec![
             Cmd::Cd {
                 path: "/".to_string(),
             },
@@ -273,11 +276,9 @@ $ ls
                         name: "a".to_string(),
                     },
                     LsOutput::File {
-                        name: "b.txt".to_string(),
                         size: 14848514,
                     },
                     LsOutput::File {
-                        name: "c.dat".to_string(),
                         size: 8504156,
                     },
                     LsOutput::Dir {
@@ -294,15 +295,12 @@ $ ls
                         name: "e".to_string(),
                     },
                     LsOutput::File {
-                        name: "f".to_string(),
                         size: 29116,
                     },
                     LsOutput::File {
-                        name: "g".to_string(),
                         size: 2557,
                     },
                     LsOutput::File {
-                        name: "h.lst".to_string(),
                         size: 62596,
                     },
                 ],
@@ -312,7 +310,6 @@ $ ls
             },
             Cmd::Ls {
                 output: vec![LsOutput::File {
-                    name: "i".to_string(),
                     size: 584,
                 }],
             },
@@ -328,19 +325,15 @@ $ ls
             Cmd::Ls {
                 output: vec![
                     LsOutput::File {
-                        name: "j".to_string(),
                         size: 4060174,
                     },
                     LsOutput::File {
-                        name: "d.log".to_string(),
                         size: 8033020,
                     },
                     LsOutput::File {
-                        name: "d.ext".to_string(),
                         size: 5626152,
                     },
                     LsOutput::File {
-                        name: "k".to_string(),
                         size: 7214296,
                     },
                 ],
