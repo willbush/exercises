@@ -113,6 +113,54 @@ fn count_visible_trees(grid: &Array2<u8>) -> usize {
     visible.iter().filter(|&&is_visible| is_visible).count()
 }
 
+fn score(r: usize, c: usize, grid: &Array2<u8>) -> usize {
+    let tree_height = grid[[r, c]];
+
+    let up = if r == 0 {
+        0
+    } else {
+        (0..r)
+            .rev()
+            .map(|r| grid[[r, c]])
+            .map(|h| {
+                println!("up h = {}", h);
+                h
+            })
+            .take_while(|&h| tree_height >= h)
+            .count()
+    };
+    let down = if r == grid.nrows() - 1 {
+        0
+    } else {
+        ((grid.nrows() - 1)..r)
+            .rev()
+            .map(|r| grid[[r, c]])
+            .take_while(|&h| tree_height >= h)
+            .count()
+    };
+    let left = if c == 0 {
+        0
+    } else {
+        (0..c)
+            .rev()
+            .map(|c| grid[[r, c]])
+            .take_while(|&h| tree_height >= h)
+            .count()
+    };
+    let right = if c == grid.ncols() - 1 {
+        0
+    } else {
+        ((grid.ncols() - 1)..c)
+            .rev()
+            .map(|c| grid[[r, c]])
+            .take_while(|&h| tree_height >= h)
+            .count()
+    };
+
+    println!("{} {} {} {}", up, down, left, right);
+    up * down * left * right
+}
+
 #[cfg(test)]
 mod day8_tests {
     use super::*;
@@ -129,5 +177,23 @@ mod day8_tests {
         ]);
 
         assert_eq!(21, count_visible_trees(&grid));
+    }
+
+    #[test]
+    fn test_score() {
+        let grid = arr2(&[[3, 0, 3], [2, 5, 5], [6, 5, 3]]);
+        let expected_scores = arr2(&[[0, 0, 0], [0, 1, 0], [0, 0, 0]]);
+
+        for r in 0..grid.nrows() {
+            for c in 0..grid.ncols() {
+                assert_eq!(
+                    expected_scores[[r, c]],
+                    score(r, c, &grid),
+                    "r: {}, c: {}",
+                    r,
+                    c
+                );
+            }
+        }
     }
 }
