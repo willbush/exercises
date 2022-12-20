@@ -27,6 +27,17 @@ pub fn run() -> std::io::Result<()> {
     println!("Day 8");
     println!("- Part 1: {:?}", count_visible_trees(&grid));
 
+    let mut highest_score = 0;
+    for r in 0..grid.nrows() {
+        for c in 0..grid.ncols() {
+            let score = score(r, c, &grid);
+            if score > highest_score {
+                highest_score = score;
+            }
+        }
+    }
+    println!("- Part 2: {:?}", highest_score);
+
     Ok(())
 }
 
@@ -113,52 +124,52 @@ fn count_visible_trees(grid: &Array2<u8>) -> usize {
     visible.iter().filter(|&&is_visible| is_visible).count()
 }
 
-fn score(r: usize, c: usize, grid: &Array2<u8>) -> usize {
-    let tree_height = grid[[r, c]];
+fn score(row: usize, col: usize, grid: &Array2<u8>) -> usize {
+    let tree_height = grid[[row, col]];
 
-    let up = if r == 0 {
+    let up = if row == 0 {
         0
     } else {
-        (0..r)
-            .rev()
-            .map(|r| grid[[r, c]])
-            .map(|h| {
-                println!("up h = {}", h);
-                h
-            })
-            .take_while(|&h| tree_height >= h)
-            .count()
+        let hs = ((0..row).rev()).map(|r| grid[[r, col]]);
+        score_heights(tree_height, hs)
     };
-    let down = if r == grid.nrows() - 1 {
+    let down = if row == grid.nrows() - 1 {
         0
     } else {
-        ((grid.nrows() - 1)..r)
-            .rev()
-            .map(|r| grid[[r, c]])
-            .take_while(|&h| tree_height >= h)
-            .count()
+        let hs = ((row + 1)..grid.nrows()).map(|r| grid[[r, col]]);
+        score_heights(tree_height, hs)
     };
-    let left = if c == 0 {
+    let left = if col == 0 {
         0
     } else {
-        (0..c)
-            .rev()
-            .map(|c| grid[[r, c]])
-            .take_while(|&h| tree_height >= h)
-            .count()
+        let hs = (0..col).rev().map(|c| grid[[row, c]]);
+        score_heights(tree_height, hs)
     };
-    let right = if c == grid.ncols() - 1 {
+    let right = if col == grid.ncols() - 1 {
         0
     } else {
-        ((grid.ncols() - 1)..c)
-            .rev()
-            .map(|c| grid[[r, c]])
-            .take_while(|&h| tree_height >= h)
-            .count()
+        let hs = ((col + 1)..grid.ncols()).map(|c| grid[[row, c]]);
+        score_heights(tree_height, hs)
     };
 
-    println!("{} {} {} {}", up, down, left, right);
     up * down * left * right
+}
+
+/// Score the heights of trees in a row or column, starting from the given tree
+/// height.
+fn score_heights<T>(tree_height: u8, hs: T) -> usize
+where
+    T: IntoIterator<Item = u8>
+{
+    let mut count = 0;
+    for h in hs {
+        if h >= tree_height {
+            count += 1;
+            break;
+        }
+        count += 1;
+    }
+    count
 }
 
 #[cfg(test)]
@@ -180,7 +191,7 @@ mod day8_tests {
     }
 
     #[test]
-    fn test_score() {
+    fn test_score_basic() {
         let grid = arr2(&[[3, 0, 3], [2, 5, 5], [6, 5, 3]]);
         let expected_scores = arr2(&[[0, 0, 0], [0, 1, 0], [0, 0, 0]]);
 
@@ -195,5 +206,31 @@ mod day8_tests {
                 );
             }
         }
+    }
+
+    #[test]
+    fn test_score_ex1() {
+        let grid = arr2(&[
+            [3, 0, 3, 7, 3],
+            [2, 5, 5, 1, 2],
+            [6, 5, 3, 3, 2],
+            [3, 3, 5, 4, 9],
+            [3, 5, 3, 9, 0],
+        ]);
+
+        assert_eq!(4, score(1, 2, &grid));
+    }
+
+    #[test]
+    fn test_score_ex2() {
+        let grid = arr2(&[
+            [3, 0, 3, 7, 3],
+            [2, 5, 5, 1, 2],
+            [6, 5, 3, 3, 2],
+            [3, 3, 5, 4, 9],
+            [3, 5, 3, 9, 0],
+        ]);
+
+        assert_eq!(8, score(3, 2, &grid));
     }
 }
