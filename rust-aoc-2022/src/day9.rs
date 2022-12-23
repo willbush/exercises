@@ -74,7 +74,8 @@ impl Point {
     /// .....    .....    .....
     /// ```
     fn drag_along(&mut self, p: &Point) {
-        let (dx, dy) = (p.x - self.x, p.y - self.y);
+        let dx = p.x - self.x;
+        let dy = p.y - self.y;
 
         match (dx.abs(), dy.abs()) {
             // head and tail are touching, so do nothing
