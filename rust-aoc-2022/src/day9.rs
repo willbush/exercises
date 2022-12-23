@@ -11,10 +11,10 @@ pub fn run() -> std::io::Result<()> {
     let file = File::open("../inputs/aoc/2022/day9.txt")?;
     let mut reader = BufReader::new(file);
     let cmds = parse_commands(&mut reader);
-    let tail_positions = simulate_rope(&cmds);
 
     println!("Day 9");
-    println!("- Part 1: {}", tail_positions.len());
+    println!("- Part 1: {}", simulate_rope(&cmds, 0).len());
+    println!("- Part 2: {}", simulate_rope(&cmds, 8).len());
 
     Ok(())
 }
@@ -98,7 +98,10 @@ impl Point {
                 self.x = p.x;
                 self.y += dy.signum() * (dy_abs - 1);
             }
-            _ => {} // everything else is undefined.
+            (dx_abs, dy_abs) => {
+                self.x += dx.signum() * (dx_abs - 1);
+                self.y += dy.signum() * (dy_abs - 1);
+            }
         };
     }
 }
@@ -151,8 +154,11 @@ where
     commands
 }
 
-fn simulate_rope(cmds: &Vec<Command>) -> HashSet<Point> {
-    let mut rope = vec![Point::new(0, 0), Point::new(0, 0)];
+fn simulate_rope(cmds: &Vec<Command>, num_inner_knots: u8) -> HashSet<Point> {
+    let mut rope = Vec::with_capacity(num_inner_knots as usize + 2);
+    for _ in 0..(num_inner_knots + 2) {
+        rope.push(Point::new(0, 0));
+    }
     let mut tail_positions = HashSet::new();
 
     tail_positions.insert(rope[rope.len() - 1]);
@@ -299,7 +305,7 @@ R 2";
         let mut reader = BufReader::new(input.as_bytes());
         let cmds = parse_commands(&mut reader);
 
-        let actual = simulate_rope(&cmds);
+        let actual = simulate_rope(&cmds, 0);
         let expected = HashSet::from_iter(vec![
             Point { x: 0, y: 0 },
             Point { x: 2, y: 2 },
@@ -315,6 +321,65 @@ R 2";
             Point { x: 2, y: 0 },
             Point { x: 3, y: 3 },
         ]);
+        assert_eq!(actual, expected);
+        // Tail should never move in a 10 knot rope.
+        assert_eq!(1, simulate_rope(&cmds, 8).len());
+    }
+
+    #[test]
+    fn test_simulating_10_knot_rope() {
+        let input = "
+R 5
+U 8
+L 8
+D 3
+R 17
+D 10
+L 25
+U 20";
+        let mut reader = BufReader::new(input.as_bytes());
+        let cmds = parse_commands(&mut reader);
+        let actual = simulate_rope(&cmds, 8);
+
+        let expected = HashSet::from_iter(vec![
+            Point { x: -2, y: -5 },
+            Point { x: 4, y: 5 },
+            Point { x: -5, y: -2 },
+            Point { x: 0, y: -5 },
+            Point { x: 9, y: -1 },
+            Point { x: 2, y: 4 },
+            Point { x: 6, y: 4 },
+            Point { x: 8, y: 2 },
+            Point { x: 3, y: -5 },
+            Point { x: 7, y: 3 },
+            Point { x: 4, y: -5 },
+            Point { x: -7, y: 0 },
+            Point { x: 0, y: 0 },
+            Point { x: 1, y: 1 },
+            Point { x: -6, y: -1 },
+            Point { x: 2, y: 2 },
+            Point { x: -4, y: -3 },
+            Point { x: -3, y: -4 },
+            Point { x: -11, y: 6 },
+            Point { x: 1, y: 3 },
+            Point { x: 2, y: -5 },
+            Point { x: 1, y: -5 },
+            Point { x: 5, y: 5 },
+            Point { x: 10, y: 0 },
+            Point { x: -10, y: 3 },
+            Point { x: 9, y: 1 },
+            Point { x: 6, y: -4 },
+            Point { x: -11, y: 4 },
+            Point { x: -1, y: -5 },
+            Point { x: -11, y: 5 },
+            Point { x: -8, y: 1 },
+            Point { x: 7, y: -3 },
+            Point { x: 5, y: -5 },
+            Point { x: -9, y: 2 },
+            Point { x: 3, y: 5 },
+            Point { x: 8, y: -2 },
+        ]);
+        assert_eq!(36, actual.len());
         assert_eq!(actual, expected);
     }
 }
